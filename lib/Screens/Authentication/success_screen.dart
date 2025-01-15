@@ -5,14 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile_pos/GlobalComponents/button_global.dart';
-import 'package:nb_utils/nb_utils.dart';
 import '../../Provider/user_role_provider.dart';
 import '../../constant.dart';
-import '../Home/home.dart';
 import 'package:mobile_pos/generated/l10n.dart' as lang;
 
 class SuccessScreen extends StatelessWidget {
-  SuccessScreen({Key? key, required this.email}) : super(key: key);
+  SuccessScreen({super.key, required this.email});
 
   final String? email;
 

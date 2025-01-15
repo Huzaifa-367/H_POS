@@ -11,7 +11,7 @@ import 'login_form.dart';
 import 'package:mobile_pos/generated/l10n.dart' as lang;
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({Key? key}) : super(key: key);
+  const RegisterScreen({super.key});
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -68,13 +68,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               suffixIconColor: Constants.kMainColor,
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                    color:
-                                        Constants.kMainColor!), // Change the border color when focused
+                                    color: Constants
+                                        .kMainColor), // Change the border color when focused
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                    color:
-                                        Constants().kBgColor), // Change the border color when not focused
+                                    color: Constants()
+                                        .kBgColor), // Change the border color when not focused
                               ),
                               border: const OutlineInputBorder(),
                               labelText: lang.S.of(context).emailText,
@@ -101,13 +101,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               suffixIconColor: Constants.kMainColor,
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                    color:
-                                        Constants.kMainColor!), // Change the border color when focused
+                                    color: Constants
+                                        .kMainColor), // Change the border color when focused
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                    color:
-                                        Constants().kBgColor), // Change the border color when not focused
+                                    color: Constants()
+                                        .kBgColor), // Change the border color when not focused
                               ),
                               border: const OutlineInputBorder(),
                               labelText: lang.S.of(context).password,
@@ -151,13 +151,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               suffixIconColor: Constants.kMainColor,
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                    color:
-                                        Constants.kMainColor!), // Change the border color when focused
+                                    color: Constants
+                                        .kMainColor), // Change the border color when focused
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                    color:
-                                        Constants().kBgColor), // Change the border color when not focused
+                                    color: Constants()
+                                        .kBgColor), // Change the border color when not focused
                               ),
                               border: const OutlineInputBorder(),
                               labelText: lang.S.of(context).confirmPass,

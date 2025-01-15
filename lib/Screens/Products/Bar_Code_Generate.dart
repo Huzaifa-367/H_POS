@@ -19,11 +19,10 @@ class BarCodeGenerateScreen extends StatefulWidget {
   var productSalePrice, productCode;
 
   BarCodeGenerateScreen(
-      {Key? key,
+      {super.key,
       this.productName,
       required this.productCode,
-      required this.productSalePrice})
-      : super(key: key);
+      required this.productSalePrice});
 
   @override
   State<BarCodeGenerateScreen> createState() => _BarCodeGenerateScreenState();

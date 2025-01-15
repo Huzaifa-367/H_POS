@@ -11,9 +11,9 @@ import 'package:mobile_pos/generated/l10n.dart' as lang;
 
 class LoginForm extends StatefulWidget {
   const LoginForm({
-    Key? key,
+    super.key,
     //required this.isEmailLogin,
-  }) : super(key: key);
+  });
 
   //final bool isEmailLogin;
 
@@ -64,13 +64,13 @@ class _LoginFormState extends State<LoginForm> {
                             decoration: InputDecoration(
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                    color:
-                                        Constants.kMainColor!), // Change the border color when focused
+                                    color: Constants
+                                        .kMainColor), // Change the border color when focused
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                    color:
-                                        Constants().kBgColor), // Change the border color when not focused
+                                    color: Constants()
+                                        .kBgColor), // Change the border color when not focused
                               ),
                               border: const OutlineInputBorder(),
                               labelText: lang.S.of(context).emailText,
@@ -96,13 +96,13 @@ class _LoginFormState extends State<LoginForm> {
                             decoration: InputDecoration(
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                    color:
-                                        Constants.kMainColor!), // Change the border color when focused
+                                    color: Constants
+                                        .kMainColor), // Change the border color when focused
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                    color:
-                                        Constants().kBgColor), // Change the border color when not focused
+                                    color: Constants()
+                                        .kBgColor), // Change the border color when not focused
                               ),
                               border: const OutlineInputBorder(),
                               labelText: lang.S.of(context).password,
@@ -157,8 +157,8 @@ class _LoginFormState extends State<LoginForm> {
                   ).visible(isEmailLogin),
                   ButtonGlobalWithoutIcon(
                       buttontext: lang.S.of(context).logIn,
-                      buttonDecoration:
-                          kButtonDecoration.copyWith(color: Constants.kMainColor),
+                      buttonDecoration: kButtonDecoration.copyWith(
+                          color: Constants.kMainColor),
                       onPressed: () {
                         if (validateAndSave()) {
                           loginProvider.signIn(context);

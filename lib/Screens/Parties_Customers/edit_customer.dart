@@ -23,7 +23,7 @@ import 'package:mobile_pos/generated/l10n.dart' as lang;
 
 // ignore: must_be_immutable
 class EditCustomer extends StatefulWidget {
-  EditCustomer({Key? key, required this.customerModel}) : super(key: key);
+  EditCustomer({super.key, required this.customerModel});
   CustomerModel customerModel;
 
   @override
@@ -127,13 +127,13 @@ class _EditCustomerState extends State<EditCustomer> {
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
-                              color:
-                                  Constants.kMainColor!), // Change the border color when focused
+                              color: Constants
+                                  .kMainColor), // Change the border color when focused
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
-                              color:
-                                  Constants().kBgColor), // Change the border color when not focused
+                              color: Constants()
+                                  .kBgColor), // Change the border color when not focused
                         ),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                         labelText: lang.S.of(context).phone,
@@ -154,13 +154,13 @@ class _EditCustomerState extends State<EditCustomer> {
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
-                              color:
-                                  Constants.kMainColor!), // Change the border color when focused
+                              color: Constants
+                                  .kMainColor), // Change the border color when focused
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
-                              color:
-                                  Constants().kBgColor), // Change the border color when not focused
+                              color: Constants()
+                                  .kBgColor), // Change the border color when not focused
                         ),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                         labelText: lang.S.of(context).name,
@@ -326,7 +326,8 @@ class _EditCustomerState extends State<EditCustomer> {
                                                 GestureDetector(
                                                   onTap: () async {
                                                     pickedImage =
-                                                        await _picker.pickImage(imageQuality: 20,
+                                                        await _picker.pickImage(
+                                                            imageQuality: 20,
                                                             source: ImageSource
                                                                 .gallery);
                                                     setState(() {
@@ -351,7 +352,8 @@ class _EditCustomerState extends State<EditCustomer> {
                                                         Icons
                                                             .photo_library_rounded,
                                                         size: 60.0,
-                                                        color: Constants.kMainColor,
+                                                        color: Constants
+                                                            .kMainColor,
                                                       ),
                                                       Text(
                                                         lang.S
@@ -360,7 +362,8 @@ class _EditCustomerState extends State<EditCustomer> {
                                                         style:
                                                             GoogleFonts.poppins(
                                                           fontSize: 20.0,
-                                                          color: Constants.kMainColor,
+                                                          color: Constants
+                                                              .kMainColor,
                                                         ),
                                                       ),
                                                     ],
@@ -372,7 +375,8 @@ class _EditCustomerState extends State<EditCustomer> {
                                                 GestureDetector(
                                                   onTap: () async {
                                                     pickedImage =
-                                                        await _picker.pickImage(imageQuality: 20,
+                                                        await _picker.pickImage(
+                                                            imageQuality: 20,
                                                             source: ImageSource
                                                                 .camera);
                                                     setState(() {
@@ -425,7 +429,8 @@ class _EditCustomerState extends State<EditCustomer> {
                                     width: 120,
                                     decoration: BoxDecoration(
                                       border: Border.all(
-                                          color: Constants.kMainColor!, width: 1),
+                                          color: Constants.kMainColor,
+                                          width: 1),
                                       borderRadius: const BorderRadius.all(
                                           Radius.circular(120)),
                                       image: imagePath == 'No Data'
@@ -478,13 +483,13 @@ class _EditCustomerState extends State<EditCustomer> {
                                 decoration: InputDecoration(
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color:
-                                            Constants.kMainColor!), // Change the border color when focused
+                                        color: Constants
+                                            .kMainColor), // Change the border color when focused
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color:
-                                            Constants().kBgColor), // Change the border color when not focused
+                                        color: Constants()
+                                            .kBgColor), // Change the border color when not focused
                                   ),
                                   border: const OutlineInputBorder(),
                                   floatingLabelBehavior:
@@ -510,13 +515,13 @@ class _EditCustomerState extends State<EditCustomer> {
                                 decoration: InputDecoration(
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                          color:
-                                              Constants.kMainColor!), // Change the border color when focused
+                                          color: Constants
+                                              .kMainColor), // Change the border color when focused
                                     ),
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                          color:
-                                              Constants().kBgColor), // Change the border color when not focused
+                                          color: Constants()
+                                              .kBgColor), // Change the border color when not focused
                                     ),
                                     border: const OutlineInputBorder(),
                                     floatingLabelBehavior:
@@ -536,13 +541,13 @@ class _EditCustomerState extends State<EditCustomer> {
                                 decoration: InputDecoration(
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color:
-                                            Constants.kMainColor!), // Change the border color when focused
+                                        color: Constants
+                                            .kMainColor), // Change the border color when focused
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color:
-                                            Constants().kBgColor), // Change the border color when not focused
+                                        color: Constants()
+                                            .kBgColor), // Change the border color when not focused
                                   ),
                                   border: const OutlineInputBorder(),
                                   floatingLabelBehavior:
@@ -559,8 +564,8 @@ class _EditCustomerState extends State<EditCustomer> {
                   ),
                   ButtonGlobalWithoutIcon(
                       buttontext: lang.S.of(context).update,
-                      buttonDecoration:
-                          kButtonDecoration.copyWith(color: Constants.kMainColor),
+                      buttonDecoration: kButtonDecoration.copyWith(
+                          color: Constants.kMainColor),
                       onPressed: () async {
                         try {
                           EasyLoading.show(

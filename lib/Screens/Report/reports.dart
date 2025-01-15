@@ -2,22 +2,19 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mobile_pos/Screens/Home/home_screen.dart';
 import 'package:mobile_pos/Screens/Loss_Profit/loss_profit_screen.dart';
-import 'package:mobile_pos/Screens/Purchase/purchase_list.dart';
 import 'package:mobile_pos/Screens/Report/Screens/due_report_screen.dart';
 import 'package:mobile_pos/Screens/Report/Screens/purchase_report.dart';
 import 'package:mobile_pos/Screens/Report/Screens/sales_report_screen.dart';
 import 'package:mobile_pos/Screens/Settings/Profile_Widget.dart';
 import 'package:mobile_pos/Screens/stock_list/stock_list.dart';
 import 'package:mobile_pos/constant.dart';
-import 'package:mobile_pos/invoice_constant.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:mobile_pos/generated/l10n.dart' as lang;
 
 class Reports extends StatefulWidget {
-  Reports({Key? key, required this.isFromHome}) : super(key: key);
-  var isFromHome;
+  bool isFromHome = false;
+  Reports({super.key, required this.isFromHome});
 
   @override
   // ignore: library_private_types_in_public_api

@@ -16,7 +16,6 @@ import 'package:mobile_pos/constant.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../GlobalComponents/button_global.dart';
 import '../../Provider/printer_provider.dart';
 import '../../Provider/profile_provider.dart';
 import '../../currency.dart';
@@ -28,7 +27,7 @@ import 'package:mobile_pos/generated/l10n.dart' as lang;
 
 // ignore: must_be_immutable
 class CustomerDetails extends StatefulWidget {
-  CustomerDetails({Key? key, required this.customerModel}) : super(key: key);
+  CustomerDetails({super.key, required this.customerModel});
   CustomerModel customerModel;
 
   @override
