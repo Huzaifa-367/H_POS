@@ -3,17 +3,17 @@ import 'dart:convert';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_paypal/flutter_paypal.dart';
-import 'package:flutter_sslcommerz/model/SSLCSdkType.dart';
-import 'package:flutter_sslcommerz/model/SSLCTransactionInfoModel.dart';
-import 'package:flutter_sslcommerz/model/SSLCommerzInitialization.dart';
-import 'package:flutter_sslcommerz/model/SSLCurrencyType.dart';
-import 'package:flutter_sslcommerz/sslcommerz.dart';
-import 'package:flutter_tap_payment/flutter_tap_payment.dart';
-import 'package:flutterwave_standard/core/flutterwave.dart';
-import 'package:flutterwave_standard/models/requests/customer.dart';
-import 'package:flutterwave_standard/models/requests/customizations.dart';
-import 'package:flutterwave_standard/models/responses/charge_response.dart';
+// import 'package:flutter_paypal/flutter_paypal.dart';
+// import 'package:flutter_sslcommerz/model/SSLCSdkType.dart';
+// import 'package:flutter_sslcommerz/model/SSLCTransactionInfoModel.dart';
+// import 'package:flutter_sslcommerz/model/SSLCommerzInitialization.dart';
+// import 'package:flutter_sslcommerz/model/SSLCurrencyType.dart';
+// import 'package:flutter_sslcommerz/sslcommerz.dart';
+// import 'package:flutter_tap_payment/flutter_tap_payment.dart';
+// import 'package:flutterwave_standard/core/flutterwave.dart';
+// import 'package:flutterwave_standard/models/requests/customer.dart';
+// import 'package:flutterwave_standard/models/requests/customizations.dart';
+// import 'package:flutterwave_standard/models/responses/charge_response.dart';
 import 'package:mobile_pos/payment_credentials.dart';
 import 'package:mobile_pos/paytm_config.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -26,11 +26,10 @@ import 'package:mobile_pos/generated/l10n.dart' as lang;
 
 class PaymentPage extends StatefulWidget {
   const PaymentPage(
-      {Key? key,
+      {super.key,
       required this.selectedPlan,
       required this.onError,
-      required this.totalAmount})
-      : super(key: key);
+      required this.totalAmount});
 
   final String totalAmount;
   final SubscriptionPlanModel selectedPlan;
@@ -341,7 +340,7 @@ class _PaymentPageState extends State<PaymentPage> {
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
           child: GestureDetector(
             onTap: () {
-              _handlePayment(widget.totalAmount, paypalCurrency);
+              // _handlePayment(widget.totalAmount, paypalCurrency);
             },
             child: Container(
               padding: const EdgeInsets.all(14.0),
@@ -364,38 +363,38 @@ class _PaymentPageState extends State<PaymentPage> {
   }
 
   //Handle Multiple Payment system
-  _handlePayment(String totalAmount, String currency) {
-    switch (whichPaymentIsChecked) {
-      case 'Razorpay':
-        // _handleRazorpayPayment(totalAmount, currency);
-        break;
-      case 'Paypal':
-        _handlePaypalPayment(totalAmount, currency);
-        break;
-      case 'SSLCommerz':
-        _handleSslCommerzPayment(totalAmount, currency);
-        break;
-      case 'Flutterwave':
-        _handleFlutterwavePayment(totalAmount, currency);
-        break;
-      // case 'Paystack':
-      //   _handlePayStackPayment(totalAmount, currency);
-      //   break;
-      case 'Stripe':
-        // _handleStripePayment(totalAmount, currency);
-        break;
-      case 'Tap':
-        _handleTapPayment(totalAmount, currency);
-        break;
-      case 'Paytm':
-        PaytmConfig().generateTxnToken(
-            widget.selectedPlan.offerPrice.toDouble(),
-            DateTime.now().millisecondsSinceEpoch.toString());
-        break;
-      default:
-        _handlePaypalPayment(totalAmount, currency);
-    }
-  }
+  // _handlePayment(String totalAmount, String currency) {
+  //   switch (whichPaymentIsChecked) {
+  //     case 'Razorpay':
+  //       // _handleRazorpayPayment(totalAmount, currency);
+  //       break;
+  //     case 'Paypal':
+  //       _handlePaypalPayment(totalAmount, currency);
+  //       break;
+  //     // case 'SSLCommerz':
+  //     //   _handleSslCommerzPayment(totalAmount, currency);
+  //     //   break;
+  //     // case 'Flutterwave':
+  //     //   _handleFlutterwavePayment(totalAmount, currency);
+  //     //   break;
+  //     // case 'Paystack':
+  //     //   _handlePayStackPayment(totalAmount, currency);
+  //     //   break;
+  //     case 'Stripe':
+  //       // _handleStripePayment(totalAmount, currency);
+  //       break;
+  //     case 'Tap':
+  //       _handleTapPayment(totalAmount, currency);
+  //       break;
+  //     // case 'Paytm':
+  //     //   PaytmConfig().generateTxnToken(
+  //     //       widget.selectedPlan.offerPrice.toDouble(),
+  //     //       DateTime.now().millisecondsSinceEpoch.toString());
+  //     //   break;
+  //     default:
+  //       _handlePaypalPayment(totalAmount, currency);
+  //   }
+  // }
 
   //Cash on Delivery Payment
   _handleCashOnDelivery(String totalAmount, String currency) {
@@ -448,53 +447,53 @@ class _PaymentPageState extends State<PaymentPage> {
   //   }
   // }
 
-  Future<void> _handleSslCommerzPayment(
-      String totalAmount, String currency) async {
-    Sslcommerz sslcommerz = Sslcommerz(
-      initializer: SSLCommerzInitialization(
-        //Use the ipn if you have valid one, or it will fail the transaction.
-        ipn_url: "www.ipnurl.com",
-        currency: SSLCurrencyType.BDT,
-        product_category: "Food",
-        sdkType: sslSandbox ? SSLCSdkType.TESTBOX : SSLCSdkType.LIVE,
-        store_id: storeId,
-        store_passwd: storePassword,
-        total_amount: totalAmount.toDouble(),
-        tran_id: DateTime.now().millisecondsSinceEpoch.toString(),
-      ),
-    );
-    try {
-      SSLCTransactionInfoModel result = await sslcommerz.payNow();
+  // Future<void> _handleSslCommerzPayment(
+  //     String totalAmount, String currency) async {
+  //   Sslcommerz sslcommerz = Sslcommerz(
+  //     initializer: SSLCommerzInitialization(
+  //       //Use the ipn if you have valid one, or it will fail the transaction.
+  //       ipn_url: "www.ipnurl.com",
+  //       currency: SSLCurrencyType.BDT,
+  //       product_category: "Food",
+  //       sdkType: sslSandbox ? SSLCSdkType.TESTBOX : SSLCSdkType.LIVE,
+  //       store_id: storeId,
+  //       store_passwd: storePassword,
+  //       total_amount: totalAmount.toDouble(),
+  //       tran_id: DateTime.now().millisecondsSinceEpoch.toString(),
+  //     ),
+  //   );
+  //   try {
+  //     SSLCTransactionInfoModel result = await sslcommerz.payNow();
 
-      if (result.status!.toLowerCase() == "failed") {
-        widget.onError();
-        Fluttertoast.showToast(
-          msg: "Transaction is Failed....",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0,
-        );
-      } else if (result.status!.toLowerCase() == "closed") {
-        Fluttertoast.showToast(
-          msg: "SDK Closed by User",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0,
-        );
-      } else {
-        print("Success");
-        onSuccess();
-      }
-    } catch (e) {
-      debugPrint(e.toString());
-    }
-  }
+  //     if (result.status!.toLowerCase() == "failed") {
+  //       widget.onError();
+  //       Fluttertoast.showToast(
+  //         msg: "Transaction is Failed....",
+  //         toastLength: Toast.LENGTH_SHORT,
+  //         gravity: ToastGravity.CENTER,
+  //         timeInSecForIosWeb: 1,
+  //         backgroundColor: Colors.red,
+  //         textColor: Colors.white,
+  //         fontSize: 16.0,
+  //       );
+  //     } else if (result.status!.toLowerCase() == "closed") {
+  //       Fluttertoast.showToast(
+  //         msg: "SDK Closed by User",
+  //         toastLength: Toast.LENGTH_SHORT,
+  //         gravity: ToastGravity.CENTER,
+  //         timeInSecForIosWeb: 1,
+  //         backgroundColor: Colors.red,
+  //         textColor: Colors.white,
+  //         fontSize: 16.0,
+  //       );
+  //     } else {
+  //       print("Success");
+  //       onSuccess();
+  //     }
+  //   } catch (e) {
+  //     debugPrint(e.toString());
+  //   }
+  // }
 
   // Razorpay payment
   // _handleRazorpayPayment(String totalAmount, String currency) {
@@ -518,106 +517,106 @@ class _PaymentPageState extends State<PaymentPage> {
   // }
 
   //Paypal payment
-  _handlePaypalPayment(String totalAmount, String currency) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (BuildContext context) => UsePaypal(
-            sandboxMode: sandbox,
-            clientId: paypalClientId,
-            secretKey: paypalClientSecret,
-            returnURL: "https://samplesite.com/return",
-            cancelURL: "https://samplesite.com/cancel",
-            transactions: [
-              {
-                "amount": {
-                  "total": totalAmount,
-                  "currency": paypalCurrency,
-                  "details": {
-                    "subtotal": totalAmount,
-                    "shipping": '0',
-                    "shipping_discount": 0
-                  }
-                },
-                "description": "Salespro Payment",
-                // "payment_options": {
-                //   "allowed_payment_method":
-                //       "INSTANT_FUNDING_SOURCE"
-                // },
-                "item_list": {
-                  "items": [
-                    {
-                      "name": "Salespro Payment",
-                      "quantity": 1,
-                      "price": totalAmount,
-                      "currency": paypalCurrency,
-                    }
-                  ],
-                }
-              }
-            ],
-            note: "Contact us for any questions on your order.",
-            onSuccess: (Map params) async {
-              onSuccess();
-            },
-            onError: (error) {
-              widget.onError();
-            },
-            onCancel: (params) {
-              widget.onError();
-            }),
-      ),
-    );
-  }
+  // _handlePaypalPayment(String totalAmount, String currency) {
+  //   Navigator.of(context).push(
+  //     MaterialPageRoute(
+  //       builder: (BuildContext context) => UsePaypal(
+  //           sandboxMode: sandbox,
+  //           clientId: paypalClientId,
+  //           secretKey: paypalClientSecret,
+  //           returnURL: "https://samplesite.com/return",
+  //           cancelURL: "https://samplesite.com/cancel",
+  //           transactions: [
+  //             {
+  //               "amount": {
+  //                 "total": totalAmount,
+  //                 "currency": paypalCurrency,
+  //                 "details": {
+  //                   "subtotal": totalAmount,
+  //                   "shipping": '0',
+  //                   "shipping_discount": 0
+  //                 }
+  //               },
+  //               "description": "Salespro Payment",
+  //               // "payment_options": {
+  //               //   "allowed_payment_method":
+  //               //       "INSTANT_FUNDING_SOURCE"
+  //               // },
+  //               "item_list": {
+  //                 "items": [
+  //                   {
+  //                     "name": "Salespro Payment",
+  //                     "quantity": 1,
+  //                     "price": totalAmount,
+  //                     "currency": paypalCurrency,
+  //                   }
+  //                 ],
+  //               }
+  //             }
+  //           ],
+  //           note: "Contact us for any questions on your order.",
+  //           onSuccess: (Map params) async {
+  //             onSuccess();
+  //           },
+  //           onError: (error) {
+  //             widget.onError();
+  //           },
+  //           onCancel: (params) {
+  //             widget.onError();
+  //           }),
+  //     ),
+  //   );
+  // }
 
   //Tap payment
-  _handleTapPayment(String totalAmount, String currency) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (BuildContext context) => TapPayment(
-            apiKey: tapApiId,
-            redirectUrl: "http://your_website.com/redirect_url",
-            postUrl: "http://your_website.com/post_url",
-            paymentData: {
-              "amount": totalAmount,
-              "currency": "OMR",
-              "threeDSecure": true,
-              "save_card": false,
-              "description": "Grocery Order From MaanGrocery",
-              "statement_descriptor": "Sample",
-              "metadata": const {"udf1": "test 1", "udf2": "test 2"},
-              "reference": {
-                "transaction": DateTime.now().microsecondsSinceEpoch.toString(),
-                "order": DateTime.now().millisecondsSinceEpoch.toString(),
-              },
-              "receipt": const {"email": false, "sms": true},
-              "customer": const {
-                "first_name": 'Test',
-                "middle_name": "test",
-                "last_name": 'Test',
-                "email": 'Test@test.com',
-                "phone": {
-                  "country_code": "965",
-                  "number": '8994849383',
-                }
-              },
-              // "merchant": {"id": ""},
-              "source": const {"id": "src_card"},
-              // "destinations": {
-              //   "destination": [
-              //     {"id": "480593777", "amount": 2, "currency": "KWD"},
-              //     {"id": "486374777", "amount": 3, "currency": "KWD"}
-              //   ]
-              // }
-            },
-            onSuccess: (Map params) async {
-              onSuccess();
-            },
-            onError: (error) {
-              widget.onError();
-            }),
-      ),
-    );
-  }
+  // _handleTapPayment(String totalAmount, String currency) {
+  //   Navigator.of(context).push(
+  //     MaterialPageRoute(
+  //       builder: (BuildContext context) => TapPayment(
+  //           apiKey: tapApiId,
+  //           redirectUrl: "http://your_website.com/redirect_url",
+  //           postUrl: "http://your_website.com/post_url",
+  //           paymentData: {
+  //             "amount": totalAmount,
+  //             "currency": "OMR",
+  //             "threeDSecure": true,
+  //             "save_card": false,
+  //             "description": "Grocery Order From MaanGrocery",
+  //             "statement_descriptor": "Sample",
+  //             "metadata": const {"udf1": "test 1", "udf2": "test 2"},
+  //             "reference": {
+  //               "transaction": DateTime.now().microsecondsSinceEpoch.toString(),
+  //               "order": DateTime.now().millisecondsSinceEpoch.toString(),
+  //             },
+  //             "receipt": const {"email": false, "sms": true},
+  //             "customer": const {
+  //               "first_name": 'Test',
+  //               "middle_name": "test",
+  //               "last_name": 'Test',
+  //               "email": 'Test@test.com',
+  //               "phone": {
+  //                 "country_code": "965",
+  //                 "number": '8994849383',
+  //               }
+  //             },
+  //             // "merchant": {"id": ""},
+  //             "source": const {"id": "src_card"},
+  //             // "destinations": {
+  //             //   "destination": [
+  //             //     {"id": "480593777", "amount": 2, "currency": "KWD"},
+  //             //     {"id": "486374777", "amount": 3, "currency": "KWD"}
+  //             //   ]
+  //             // }
+  //           },
+  //           onSuccess: (Map params) async {
+  //             onSuccess();
+  //           },
+  //           onError: (error) {
+  //             widget.onError();
+  //           }),
+  //     ),
+  //   );
+  // }
 
   // final plugin = PaystackPlugin();
   // //Paystack payment
@@ -641,30 +640,30 @@ class _PaymentPageState extends State<PaymentPage> {
   // }
 
   //Flutterwave payment
-  _handleFlutterwavePayment(String totalAmount, String currency) async {
-    final Customer customer = Customer(
-      name: "Test Test",
-      phoneNumber: '567546457456',
-      email: 'test@test.com',
-    );
-    final Flutterwave flutterwave = Flutterwave(
-        context: context,
-        publicKey: flutterwavePublicKey,
-        currency: flutterwaveCurrency,
-        redirectUrl: 'https://facebook.com',
-        txRef: DateTime.now().millisecondsSinceEpoch.toString(),
-        amount: totalAmount,
-        customer: customer,
-        paymentOptions: "card, payattitude, barter, bank transfer, ussd",
-        customization: Customization(title: "Test Payment"),
-        isTestMode: sandbox);
-    final ChargeResponse response = await flutterwave.charge();
-    if (response.success == true) {
-      onSuccess();
-    } else {
-      widget.onError();
-    }
-  }
+  // _handleFlutterwavePayment(String totalAmount, String currency) async {
+  //   final Customer customer = Customer(
+  //     name: "Test Test",
+  //     phoneNumber: '567546457456',
+  //     email: 'test@test.com',
+  //   );
+  //   final Flutterwave flutterwave = Flutterwave(
+  //       context: context,
+  //       publicKey: flutterwavePublicKey,
+  //       currency: flutterwaveCurrency,
+  //       redirectUrl: 'https://facebook.com',
+  //       txRef: DateTime.now().millisecondsSinceEpoch.toString(),
+  //       amount: totalAmount,
+  //       customer: customer,
+  //       paymentOptions: "card, payattitude, barter, bank transfer, ussd",
+  //       customization: Customization(title: "Test Payment"),
+  //       isTestMode: sandbox);
+  //   final ChargeResponse response = await flutterwave.charge();
+  //   if (response.success == true) {
+  //     onSuccess();
+  //   } else {
+  //     widget.onError();
+  //   }
+  // }
 
   void onSuccess() async {
     try {

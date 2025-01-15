@@ -22,7 +22,7 @@ import 'package:mobile_pos/model/subscription_model.dart';
 import 'package:mobile_pos/model/subscription_plan_model.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart' as pro;
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+// import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../../Provider/homepage_image_provider.dart';
 import '../../Provider/profile_provider.dart';
 import '../../model/paypal_info_model.dart';
@@ -34,7 +34,7 @@ import 'package:mobile_pos/generated/l10n.dart' as lang;
 import '../../Provider/user_role_provider.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -421,278 +421,208 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Reports(
                                 isFromHome: true,
                               ),
-                              // child: ListView(
-                              //   controller: ctr,
-                              //   children: [
-                              //     SettingsGroup(
-                              //       items: [
-                              //         SettingsItem(
-                              //           onTap: () {
-                              //             const PurchaseReportScreen()
-                              //                 .launch(context);
-                              //           },
-                              //           icon: Icons.person_outline_rounded,
-                              //           iconStyle: IconStyle(
-                              //             backgroundColor: Colors.blue,
-                              //           ),
-                              //           title: lang.S
-                              //               .of(context)
-                              //               .purchaseReport,
-                              //           subtitle: "Learn more about us",
-                              //         ),
-                              //         SettingsItem(
-                              //           onTap: () {
-                              //             const SalesReportScreen()
-                              //                 .launch(context);
-                              //           },
-                              //           icon: Icons.person_outline_rounded,
-                              //           iconStyle: IconStyle(
-                              //             backgroundColor: Colors.green,
-                              //           ),
-                              //           title:
-                              //               lang.S.of(context).salesReport,
-                              //           subtitle: "Learn more about us",
-                              //         ),
-                              //         SettingsItem(
-                              //           onTap: () {
-                              //             const DueReportScreen()
-                              //                 .launch(context);
-                              //           },
-                              //           icon: Icons.person_outline_rounded,
-                              //           iconStyle: IconStyle(
-                              //             backgroundColor: Colors.redAccent,
-                              //           ),
-                              //           title: lang.S.of(context).dueReport,
-                              //           subtitle: "Learn more about us",
-                              //         ),
-                              //         SettingsItem(
-                              //           onTap: () {
-                              //             const StockList().launch(context);
-                              //           },
-                              //           icon: Icons.person_outline_rounded,
-                              //           iconStyle: IconStyle(
-                              //             backgroundColor: Colors.blue,
-                              //           ),
-                              //           title: lang.S.of(context).stockList,
-                              //           subtitle: "Learn more about us",
-                              //         ),
-                              //         SettingsItem(
-                              //           onTap: () {
-                              //             const LossProfitScreen()
-                              //                 .launch(context);
-                              //           },
-                              //           icon: Icons.person_outline_rounded,
-                              //           iconStyle: IconStyle(
-                              //             backgroundColor: Colors.blue,
-                              //           ),
-                              //           title:
-                              //               lang.S.of(context).lossOrProfit,
-                              //           subtitle: "Learn more about us",
-                              //         ),
-                              //       ],
-                              //     ),
-                              //   ],
-                              // ),
                             )
                           : const SizedBox.shrink(),
 
-                      Container(
-                          height: 1,
-                          width: double.infinity,
-                          color: Constants().kBgColor),
-                      const SizedBox(height: 10),
+                      // Container(
+                      //     height: 1,
+                      //     width: double.infinity,
+                      //     color: Constants().kBgColor),
+                      // const SizedBox(height: 10),
 
                       /// --------------------   Advertise Banners      ----------------
 
-                      SizedBox(
-                        child: homePageImageProvider.when(
-                          data: (images) {
-                            if (images.isNotEmpty) {
-                              return SizedBox(
-                                width: double.infinity,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      lang.S.of(context).whatNew,
-                                      textAlign: TextAlign.start,
-                                      style: GoogleFonts.poppins(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20.0,
-                                      ),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Stack(
-                                          children: [
-                                            Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                vertical: 10,
-                                                horizontal: 5,
-                                              ),
-                                              height: 180,
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
-                                              child: PageView.builder(
-                                                pageSnapping: true,
-                                                itemCount: images.length,
-                                                controller: pageController,
-                                                itemBuilder: (_, index) {
-                                                  if (images[index]
-                                                      .imageUrl
-                                                      .contains(
-                                                          'https://firebasestorage.googleapis.com')) {
-                                                    return GestureDetector(
-                                                      onTap: () {
-                                                        const PackageScreen()
-                                                            .launch(context);
-                                                      },
-                                                      child: ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                        child: Image(
-                                                          image: NetworkImage(
-                                                            images[index]
-                                                                .imageUrl,
-                                                          ),
-                                                          fit: BoxFit.fill,
-                                                        ),
-                                                      ),
-                                                    );
-                                                  } else {
-                                                    YoutubePlayerController
-                                                        videoController =
-                                                        YoutubePlayerController(
-                                                      flags:
-                                                          const YoutubePlayerFlags(
-                                                        autoPlay: false,
-                                                        mute: false,
-                                                      ),
-                                                      initialVideoId:
-                                                          images[index]
-                                                              .imageUrl,
-                                                    );
-                                                    return ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      child: YoutubePlayer(
-                                                        controller:
-                                                            videoController,
-                                                        showVideoProgressIndicator:
-                                                            true,
-                                                        onReady: () {},
-                                                      ),
-                                                    );
-                                                  }
-                                                },
-                                              ),
-                                            ),
-                                            Positioned(
-                                              top: 75,
-                                              left: 10,
-                                              child: GestureDetector(
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                    color: kDarkWhite
-                                                        .withOpacity(0.8),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50),
-                                                  ),
-                                                  height: 40,
-                                                  width: 40,
-                                                  child: Icon(
-                                                    Icons.keyboard_arrow_left,
-                                                    color: Constants.kMainColor,
-                                                  ),
-                                                ),
-                                                onTap: () {
-                                                  pageController.previousPage(
-                                                      duration: const Duration(
-                                                          milliseconds: 300),
-                                                      curve: Curves.linear);
-                                                },
-                                              ),
-                                            ),
-                                            Positioned(
-                                              top: 75,
-                                              right: 10,
-                                              child: GestureDetector(
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                    color: kDarkWhite
-                                                        .withOpacity(0.8),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50),
-                                                  ),
-                                                  width: 40,
-                                                  height: 40,
-                                                  child: Icon(
-                                                    Icons.keyboard_arrow_right,
-                                                    color: Constants.kMainColor,
-                                                  ),
-                                                ),
-                                                onTap: () {
-                                                  pageController.nextPage(
-                                                      duration: const Duration(
-                                                          milliseconds: 300),
-                                                      curve: Curves.linear);
-                                                },
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 30),
-                                  ],
-                                ),
-                              );
-                            } else {
-                              return GestureDetector(
-                                onTap: () {
-                                  const PurchasePremiumPlanScreen(
-                                    isCameBack: true,
-                                  ).launch(context);
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.all(10),
-                                  height: 180,
-                                  width: MediaQuery.of(context).size.width,
-                                  decoration: const BoxDecoration(
-                                      image: DecorationImage(
-                                          image: AssetImage(
-                                              'images/banner2.png'))),
-                                ),
-                              );
-                            }
-                          },
-                          error: (e, stack) {
-                            return Container(
-                              padding: const EdgeInsets.all(10),
-                              height: 180,
-                              width: 320,
-                              decoration: const BoxDecoration(
-                                  image: DecorationImage(
-                                      image: AssetImage('images/banner2.png'))),
-                            );
-                          },
-                          loading: () {
-                            return Center(
-                                child: CircularProgressIndicator(
-                              color: Constants.kMainColor,
-                            ));
-                          },
-                        ),
-                      ),
+                      // SizedBox(
+                      //   child: homePageImageProvider.when(
+                      //     data: (images) {
+                      //       if (images.isNotEmpty) {
+                      //         return SizedBox(
+                      //           width: double.infinity,
+                      //           child: Column(
+                      //             crossAxisAlignment: CrossAxisAlignment.center,
+                      //             children: [
+                      //               Text(
+                      //                 lang.S.of(context).whatNew,
+                      //                 textAlign: TextAlign.start,
+                      //                 style: GoogleFonts.poppins(
+                      //                   color: Colors.black,
+                      //                   fontWeight: FontWeight.bold,
+                      //                   fontSize: 20.0,
+                      //                 ),
+                      //               ),
+                      //               Row(
+                      //                 mainAxisAlignment:
+                      //                     MainAxisAlignment.spaceAround,
+                      //                 children: [
+                      //                   Stack(
+                      //                     children: [
+                      //                       Container(
+                      //                         padding:
+                      //                             const EdgeInsets.symmetric(
+                      //                           vertical: 10,
+                      //                           horizontal: 5,
+                      //                         ),
+                      //                         height: 180,
+                      //                         width: MediaQuery.of(context)
+                      //                             .size
+                      //                             .width,
+                      //                         child: PageView.builder(
+                      //                           pageSnapping: true,
+                      //                           itemCount: images.length,
+                      //                           controller: pageController,
+                      //                           itemBuilder: (_, index) {
+                      //                             if (images[index]
+                      //                                 .imageUrl
+                      //                                 .contains(
+                      //                                     'https://firebasestorage.googleapis.com')) {
+                      //                               return GestureDetector(
+                      //                                 onTap: () {
+                      //                                   const PackageScreen()
+                      //                                       .launch(context);
+                      //                                 },
+                      //                                 child: ClipRRect(
+                      //                                   borderRadius:
+                      //                                       BorderRadius
+                      //                                           .circular(10),
+                      //                                   child: Image(
+                      //                                     image: NetworkImage(
+                      //                                       images[index]
+                      //                                           .imageUrl,
+                      //                                     ),
+                      //                                     fit: BoxFit.fill,
+                      //                                   ),
+                      //                                 ),
+                      //                               );
+                      //                             }
+                      //                             return null;
+                      //                             //  else {
+                      //                             //   YoutubePlayerController
+                      //                             //       videoController =
+                      //                             //       YoutubePlayerController(
+                      //                             //     flags:
+                      //                             //         const YoutubePlayerFlags(
+                      //                             //       autoPlay: false,
+                      //                             //       mute: false,
+                      //                             //     ),
+                      //                             //     initialVideoId:
+                      //                             //         images[index]
+                      //                             //             .imageUrl,
+                      //                             //   );
+                      //                             //   return ClipRRect(
+                      //                             //     borderRadius:
+                      //                             //         BorderRadius.circular(
+                      //                             //             10),
+                      //                             //     child: YoutubePlayer(
+                      //                             //       controller:
+                      //                             //           videoController,
+                      //                             //       showVideoProgressIndicator:
+                      //                             //           true,
+                      //                             //       onReady: () {},
+                      //                             //     ),
+                      //                             //   );
+                      //                             // }
+                      //                           },
+                      //                         ),
+                      //                       ),
+                      //                       Positioned(
+                      //                         top: 75,
+                      //                         left: 10,
+                      //                         child: GestureDetector(
+                      //                           child: Container(
+                      //                             decoration: BoxDecoration(
+                      //                               color: kDarkWhite
+                      //                                   .withOpacity(0.8),
+                      //                               borderRadius:
+                      //                                   BorderRadius.circular(
+                      //                                       50),
+                      //                             ),
+                      //                             height: 40,
+                      //                             width: 40,
+                      //                             child: Icon(
+                      //                               Icons.keyboard_arrow_left,
+                      //                               color: Constants.kMainColor,
+                      //                             ),
+                      //                           ),
+                      //                           onTap: () {
+                      //                             pageController.previousPage(
+                      //                                 duration: const Duration(
+                      //                                     milliseconds: 300),
+                      //                                 curve: Curves.linear);
+                      //                           },
+                      //                         ),
+                      //                       ),
+                      //                       Positioned(
+                      //                         top: 75,
+                      //                         right: 10,
+                      //                         child: GestureDetector(
+                      //                           child: Container(
+                      //                             decoration: BoxDecoration(
+                      //                               color: kDarkWhite
+                      //                                   .withOpacity(0.8),
+                      //                               borderRadius:
+                      //                                   BorderRadius.circular(
+                      //                                       50),
+                      //                             ),
+                      //                             width: 40,
+                      //                             height: 40,
+                      //                             child: Icon(
+                      //                               Icons.keyboard_arrow_right,
+                      //                               color: Constants.kMainColor,
+                      //                             ),
+                      //                           ),
+                      //                           onTap: () {
+                      //                             pageController.nextPage(
+                      //                                 duration: const Duration(
+                      //                                     milliseconds: 300),
+                      //                                 curve: Curves.linear);
+                      //                           },
+                      //                         ),
+                      //                       ),
+                      //                     ],
+                      //                   ),
+                      //                 ],
+                      //               ),
+                      //               const SizedBox(height: 30),
+                      //             ],
+                      //           ),
+                      //         );
+                      //       } else {
+                      //         return GestureDetector(
+                      //           onTap: () {
+                      //             const PurchasePremiumPlanScreen(
+                      //               isCameBack: true,
+                      //             ).launch(context);
+                      //           },
+                      //           child: Container(
+                      //             padding: const EdgeInsets.all(10),
+                      //             height: 180,
+                      //             width: MediaQuery.of(context).size.width,
+                      //             decoration: const BoxDecoration(
+                      //                 image: DecorationImage(
+                      //                     image: AssetImage(
+                      //                         'images/banner2.png'))),
+                      //           ),
+                      //         );
+                      //       }
+                      //     },
+                      //     error: (e, stack) {
+                      //       return Container(
+                      //         padding: const EdgeInsets.all(10),
+                      //         height: 180,
+                      //         width: 320,
+                      //         decoration: const BoxDecoration(
+                      //             image: DecorationImage(
+                      //                 image: AssetImage('images/banner2.png'))),
+                      //       );
+                      //     },
+                      //     loading: () {
+                      //       return Center(
+                      //           child: CircularProgressIndicator(
+                      //         color: Constants.kMainColor,
+                      //       ));
+                      //     },
+                      //   ),
+                      // ),
 
                       // Padding(
                       //   padding: const EdgeInsets.all(8.0),
@@ -786,10 +716,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
 class HomeGridCards extends StatefulWidget {
   const HomeGridCards({
-    Key? key,
+    super.key,
     required this.gridItems,
     required this.color,
-  }) : super(key: key);
+  });
   final GridItems gridItems;
   final Color color;
 
@@ -902,47 +832,45 @@ class _HomeGridCardsState extends State<HomeGridCards> {
                       ///
 
                       //---------- Route Navigation ------------------
-                      setState(
-                        () async {
-                          isSubUser
-                              ? checkPermission(item: widget.gridItems.title)
-                                  ? await subscriptionChecker(
-                                          item: widget.gridItems.title)
-                                      ? Navigator.of(context).pushNamed(
-                                          '/${widget.gridItems.route}')
-                                      : EasyLoading.showError(
-                                          'Update your plan first,\nyour limit is over.')
-                                  : EasyLoading.showError(
-                                      'Sorry, you have no permission to access this service')
-                              : await subscriptionChecker(
-                                      item: widget.gridItems.title)
-                                  ? widget.gridItems.title !=
-                                          lang.S.of(context).reports
-                                      ? Navigator.of(context).pushNamed(
-                                          '/${widget.gridItems.route}')
-                                      : context
-                                          .read<VisibilityProvider>()
-                                          .toggleVisibility()
-                                  : EasyLoading.showError(
-                                      'Update your plan first,\nyour limit is over.');
-/////
-                          //-----------------------   Auto Scroll To Report List      -------------------------------
-                          //
 
-                          // widget.gridItems.title == lang.S.of(context).reports
-                          //     ? Future.delayed(
-                          //         const Duration(milliseconds: 100),
-                          //         () async {
-                          //           await Scrollable.ensureVisible(
-                          //             listKey.currentContext!,
-                          //             duration:
-                          //                 const Duration(milliseconds: 800),
-                          //           );
-                          //         },
-                          //       )
-                          //     : null;
-                        },
-                      );
+                      isSubUser
+                          ? checkPermission(item: widget.gridItems.title)
+                              ? await subscriptionChecker(
+                                      item: widget.gridItems.title)
+                                  ? Navigator.of(context)
+                                      .pushNamed('/${widget.gridItems.route}')
+                                  : EasyLoading.showError(
+                                      'Update your plan first,\nyour limit is over.')
+                              : EasyLoading.showError(
+                                  'Sorry, you have no permission to access this service')
+                          : await subscriptionChecker(
+                                  item: widget.gridItems.title)
+                              ? widget.gridItems.title !=
+                                      lang.S.of(context).reports
+                                  ? Navigator.of(context)
+                                      .pushNamed('/${widget.gridItems.route}')
+                                  : context
+                                      .read<VisibilityProvider>()
+                                      .toggleVisibility()
+                              : EasyLoading.showError(
+                                  'Update your plan first,\nyour limit is over.');
+
+/////
+                      //-----------------------   Auto Scroll To Report List      -------------------------------
+                      //
+
+                      // widget.gridItems.title == lang.S.of(context).reports
+                      //     ? Future.delayed(
+                      //         const Duration(milliseconds: 100),
+                      //         () async {
+                      //           await Scrollable.ensureVisible(
+                      //             listKey.currentContext!,
+                      //             duration:
+                      //                 const Duration(milliseconds: 800),
+                      //           );
+                      //         },
+                      //       )
+                      //     : null;
                     },
                     child: Container(
                       height: 50,

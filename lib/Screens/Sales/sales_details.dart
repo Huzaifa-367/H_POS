@@ -256,16 +256,16 @@ class _SalesDetailsState extends State<SalesDetails> {
               iconWidget: Icons.arrow_forward,
               buttontext: lang.S.of(context).continueButton,
               iconColor: Colors.white,
-              buttonDecoration: kButtonDecoration.copyWith(color: Constants.kMainColor),
+              buttonDecoration:
+                  kButtonDecoration.copyWith(color: Constants.kMainColor),
               onPressed: () async {
                 try {
                   EasyLoading.show(status: 'Loading...', dismissOnTap: false);
-                  final DatabaseReference salesReportRef =
-                      FirebaseDatabase.instance
-                          // ignore: deprecated_member_use
-                          .reference()
-                          .child(constUserId)
-                          .child('Sales Report');
+                  final DatabaseReference salesReportRef = FirebaseDatabase
+                      .instance
+                      .ref()
+                      .child(constUserId)
+                      .child('Sales Report');
                   SalesReport salesReport = SalesReport(
                       customer,
                       providerData.getTotalAmount().toString(),

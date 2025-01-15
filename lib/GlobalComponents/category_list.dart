@@ -6,12 +6,11 @@ import 'package:mobile_pos/GlobalComponents/add_category.dart';
 import 'package:mobile_pos/constant.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-import '../Provider/category,brans,units_provide.dart';
-import 'button_global.dart';
+import '../Provider/category_brans_units_provide.dart';
 
 // ignore: must_be_immutable
 class CategoryList extends StatefulWidget {
-  const CategoryList({Key? key}) : super(key: key);
+  const CategoryList({super.key});
 
   @override
   // ignore: library_private_types_in_public_api

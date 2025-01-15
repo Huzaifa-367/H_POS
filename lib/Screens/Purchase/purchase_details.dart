@@ -26,7 +26,9 @@ class _PurchaseDetailsState extends State<PurchaseDetails> {
   String customer = '';
   @override
   void initState() {
-    widget.customerName == null ? customer = 'Unknown' : customer = widget.customerName;
+    widget.customerName == null
+        ? customer = 'Unknown'
+        : customer = widget.customerName;
     super.initState();
   }
 
@@ -48,10 +50,14 @@ class _PurchaseDetailsState extends State<PurchaseDetails> {
         actions: [
           PopupMenuButton(
             itemBuilder: (BuildContext bc) => [
-              const PopupMenuItem(value: "/purchaseCustomer", child: Text('Add Customer')),
-              const PopupMenuItem(value: "/addDiscount", child: Text('Add Discount')),
-              const PopupMenuItem(value: "/settings", child: Text('Cancel All Product')),
-              const PopupMenuItem(value: "/settings", child: Text('Vat Doesn\'t Apply')),
+              const PopupMenuItem(
+                  value: "/purchaseCustomer", child: Text('Add Customer')),
+              const PopupMenuItem(
+                  value: "/addDiscount", child: Text('Add Discount')),
+              const PopupMenuItem(
+                  value: "/settings", child: Text('Cancel All Product')),
+              const PopupMenuItem(
+                  value: "/settings", child: Text('Vat Doesn\'t Apply')),
             ],
             onSelected: (value) {
               Navigator.pushNamed(context, '$value');
@@ -66,13 +72,14 @@ class _PurchaseDetailsState extends State<PurchaseDetails> {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: cart.cartItem.length,
+              itemCount: cart.cartLength,
               itemBuilder: (context, index) => Padding(
-                padding: const EdgeInsets.only(left: 25.0, right: 25.0, bottom: 10.0),
+                padding: const EdgeInsets.only(
+                    left: 25.0, right: 25.0, bottom: 10.0),
                 child: Row(
                   children: [
                     Text(
-                      cart.cartItem[index].productName.toString(),
+                      cart.cartItemsList[index].productName.toString(),
                       style: GoogleFonts.poppins(
                         color: kGreyTextColor,
                         fontSize: 15.0,
@@ -80,7 +87,7 @@ class _PurchaseDetailsState extends State<PurchaseDetails> {
                     ),
                     const Spacer(),
                     Text(
-                      '$currency${cart.cartItem[index].unitPrice.toString()}',
+                      '$currency${cart.cartItemsList[index].variants.first.price.toString()}',
                       style: GoogleFonts.poppins(
                         color: kGreyTextColor,
                         fontSize: 15.0,
@@ -96,7 +103,8 @@ class _PurchaseDetailsState extends State<PurchaseDetails> {
             thickness: 0.5,
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 25.0, right: 25.0, bottom: 10.0),
+            padding:
+                const EdgeInsets.only(left: 25.0, right: 25.0, bottom: 10.0),
             child: Row(
               children: [
                 Text(
@@ -108,7 +116,7 @@ class _PurchaseDetailsState extends State<PurchaseDetails> {
                 ),
                 const Spacer(),
                 Text(
-                  cart.getTotalAmount().toString(),
+                  cart.total.toString(),
                   style: GoogleFonts.poppins(
                     color: kGreyTextColor,
                     fontSize: 15.0,
@@ -118,7 +126,8 @@ class _PurchaseDetailsState extends State<PurchaseDetails> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 25.0, right: 25.0, bottom: 10.0),
+            padding:
+                const EdgeInsets.only(left: 25.0, right: 25.0, bottom: 10.0),
             child: Row(
               children: [
                 Text(
@@ -148,7 +157,8 @@ class _PurchaseDetailsState extends State<PurchaseDetails> {
             width: MediaQuery.of(context).size.width,
             color: kDarkWhite,
             child: Padding(
-              padding: const EdgeInsets.only(left: 25.0, right: 25.0, bottom: 10.0),
+              padding:
+                  const EdgeInsets.only(left: 25.0, right: 25.0, bottom: 10.0),
               child: Row(
                 children: [
                   Text(
@@ -160,7 +170,7 @@ class _PurchaseDetailsState extends State<PurchaseDetails> {
                   ),
                   const Spacer(),
                   Text(
-                    cart.getTotalAmount().toString(),
+                    cart.total.toString(),
                     style: GoogleFonts.poppins(
                       color: Colors.black,
                       fontSize: 15.0,
@@ -175,24 +185,28 @@ class _PurchaseDetailsState extends State<PurchaseDetails> {
             iconWidget: Icons.arrow_forward,
             buttontext: 'Continue',
             iconColor: Colors.white,
-            buttonDecoration: kButtonDecoration.copyWith(color: Constants.kMainColor),
+            buttonDecoration:
+                kButtonDecoration.copyWith(color: Constants.kMainColor),
             onPressed: () async {
               try {
                 EasyLoading.show(status: 'Loading...', dismissOnTap: false);
                 // ignore: no_leading_underscores_for_local_identifiers
-                final DatabaseReference _purchaseReportRef = FirebaseDatabase.instance
-                    // ignore: deprecated_member_use
-                    .reference()
-                    .child(constUserId)
-                    .child('Purchase Report');
-                PurchaseReport purchaseReport = PurchaseReport(customer, cart.getTotalAmount().toString(), cart.getCartItemCount().toString());
+                final DatabaseReference _purchaseReportRef =
+                    FirebaseDatabase.instance
+                        // ignore: deprecated_member_use
+                        .ref()
+                        .child(constUserId)
+                        .child('Purchase Report');
+                PurchaseReport purchaseReport = PurchaseReport(customer,
+                    cart.total.toString(), cart.cartLength.toString());
                 await _purchaseReportRef.push().set(purchaseReport.toJson());
                 EasyLoading.dismiss();
                 // ignore: use_build_context_synchronously
                 const PaymentOptions().launch(context);
               } catch (e) {
                 EasyLoading.dismiss();
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text(e.toString())));
               }
             },
           ),

@@ -2,7 +2,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:flutter_paypal/flutter_paypal.dart';
+// import 'package:flutter_paypal/flutter_paypal.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_pos/model/subscription_plan_model.dart';
 import 'package:mobile_pos/payment_methods.dart';
@@ -19,8 +19,7 @@ import 'package:mobile_pos/generated/l10n.dart' as lang;
 import 'package:url_launcher/url_launcher.dart';
 
 class PurchasePremiumPlanScreen extends StatefulWidget {
-  const PurchasePremiumPlanScreen({Key? key, required this.isCameBack})
-      : super(key: key);
+  const PurchasePremiumPlanScreen({super.key, required this.isCameBack});
 
   final bool isCameBack;
 
@@ -426,10 +425,10 @@ class _PurchasePremiumPlanScreenState extends State<PurchasePremiumPlanScreen> {
                   }, error: (Object error, StackTrace? stackTrace) {
                     return Text(error.toString());
                   }, loading: () {
-                     return Center(
-                  child: CircularProgressIndicator(
-                color: Constants.kMainColor,
-              ));
+                    return Center(
+                        child: CircularProgressIndicator(
+                      color: Constants.kMainColor,
+                    ));
                   }),
                   const SizedBox(height: 20),
                   GestureDetector(

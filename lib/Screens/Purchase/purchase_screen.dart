@@ -199,14 +199,20 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                         return GestureDetector(
                           onTap: () {
                             cart.addToCart(
-                                productId: items,
-                                unitPrice:
-                                    products[index].productSalePrice.toInt(),
-                                productName: products[index].productName);
+                              cartModel: CartModel(
+                                  productId: products[index].productCode,
+                                  productName: products[index].productName,
+                                  variants: [],
+                                  productDetails: products[index].productName),
+                              // productId: items,
+                              // unitPrice:
+                              //     products[index].productSalePrice.toInt(),
+                              // productName: products[index].productName
+                            );
                             EasyLoading.showSuccess('Added To Cart',
                                 duration: const Duration(milliseconds: 1000));
                             setState(() {
-                              total = cart.getTotalAmount().toString();
+                              total = cart.total.toString();
                               items++;
                             });
                           },

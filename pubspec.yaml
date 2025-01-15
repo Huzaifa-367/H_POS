@@ -1,6 +1,5 @@
 name: mobile_pos
-description: A new Flutter project.
-
+description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -12,13 +11,15 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # build by specifying --build-name and --build-number, respectively.
 # In Android, build-name is used as versionName while build-number used as versionCode.
 # Read more about Android versioning at https://developer.android.com/studio/publish/versioning
-# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
+# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+# In Windows, build-name is used as the major, minor, and patch parts
+# of the product and file versions while build-number is used as the build suffix.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=3.2.3 <4.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -30,62 +31,66 @@ dependencies:
   flutter:
     sdk: flutter
 
-  flutter_localizations:
-    sdk: flutter
-
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.5
 
-  google_fonts: ^4.0.3
-  flutter_credit_card: ^3.0.2
-  barcode_widget: ^2.0.2
-  flutter_grid_button: ^2.0.0
-  firebase_core: ^2.6.1
-  firebase_database: ^10.0.14
-  firebase_auth: ^4.2.9
-  firebase_storage: ^11.0.13
-  image_picker: ^1.0.0
+  cupertino_icons: ^1.0.8
+
+  google_fonts: ^6.2.1
+  flutter_credit_card: ^4.0.1
+  barcode_widget: ^2.0.4
+  flutter_grid_button: ^2.1.0
+  firebase_core: ^3.10.0
+  firebase_database: ^11.3.0
+  firebase_auth: ^5.4.0
+  firebase_storage: ^12.4.0
+  image_picker: ^1.1.2
+  image: any
   flutter_barcode_scanner: ^2.0.0
   flutter_cart: ^0.0.7
   flutter_easyloading: ^3.0.5
-  math_expressions: ^2.3.1
-  modal_bottom_sheet: ^2.1.0
-  platform: ^3.1.0
-  flutter_riverpod: ^2.3.2
+  math_expressions: ^2.6.0
+  modal_bottom_sheet: ^3.0.0
+  platform: ^3.1.6
+  flutter_riverpod: ^2.6.1
   shimmer: ^3.0.0
-  cached_network_image: ^3.2.1
-  url_launcher: ^6.1.5
+  cached_network_image: ^3.4.1
+  url_launcher: ^6.3.1
   flutter_feather_icons: ^2.0.0+1
   bluetooth_thermal_printer: ^0.0.6
-  esc_pos_utils: ^1.1.0
-  permission_handler: ^11.0.0
-  flutter_paypal: ^0.2.0
-  in_app_update: ^4.0.1
-  shared_preferences: ^2.0.15
-  restart_app: ^1.2.1
-  intl: ^0.18.0
-  pinput: ^3.0.1
-  nb_utils: ^6.0.0
-  youtube_player_flutter: ^8.1.1
-  pdf: ^3.8.4
-  open_file: ^3.2.1
+  esc_pos_utils: any
+  permission_handler: ^11.3.1
+  # flutter_paypal: ^0.2.1
+  in_app_update: ^4.2.3
+  shared_preferences: ^2.3.5
+  restart_app: ^1.3.2
+  intl: any
+  pinput: ^5.0.0
+  nb_utils: 6.0.4
+  # youtube_player_flutter: ^8.0.0
+  pdf: any
+  open_file: ^3.5.10
   date_time_format: ^2.0.1
-  currency_picker: ^2.0.16
-  path_provider: ^2.0.14
-  provider: ^6.0.5
-  http: ^0.13.6
+  currency_picker: ^2.0.21
+  path_provider: ^2.1.5
+  provider: ^6.1.2
+  http: ^1.2.2
   internet_connection_checker: ^1.0.0+1
-  flutter_pdfview: ^1.3.1
-  flutterwave_standard: ^1.0.3
-#  flutter_stripe: ^9.4.0
-  paytm_allinonesdk: ^1.2.2
-  flutter_tap_payment: ^0.2.0
-  flutter_sslcommerz: ^2.2.2-nullsafety.0
-  razorpay_flutter: ^1.3.5
+  flutter_pdfview: ^1.4.0
+  # flutterwave_standard: ^1.0.8
+  #  flutter_stripe: ^9.4.0
+  # paytm_allinonesdk: ^1.2.8
+  # flutter_tap_payment: ^0.2.1
+  # flutter_sslcommerz: ^2.2.2-nullsafety.0
+  # razorpay_flutter: ^1.3.7
   animated_path: ^0.0.2
-  flutter_downloader: ^1.11.4
+  flutter_downloader: ^1.11.8
+
+
+  flutter_localizations:
+    sdk: flutter
+  # archive: ^4.0.2
 
 dev_dependencies:
   flutter_test:
@@ -96,8 +101,8 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.1
-  change_app_package_name: ^1.1.0
+  flutter_lints: ^5.0.0
+  change_app_package_name: ^1.4.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

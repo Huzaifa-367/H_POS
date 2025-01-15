@@ -27,9 +27,7 @@ import 'package:mobile_pos/Screens/Sales/sales_list.dart';
 import 'package:mobile_pos/Screens/stock_list/stock_list.dart';
 import 'package:mobile_pos/Screens/SplashScreen/on_board.dart';
 import 'package:mobile_pos/Screens/SplashScreen/splash_screen.dart';
-import 'package:mobile_pos/Testing.dart';
 import 'package:mobile_pos/constant.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'Screens/Due Calculation/due_calculation_contact_screen.dart';
 import 'Screens/Loss_Profit/loss_profit_screen.dart';
 import 'Screens/Products/update_product.dart';
@@ -42,39 +40,32 @@ import 'generated/l10n.dart';
 import 'package:provider/provider.dart' as pro;
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    name: appName,
-    // options: const FirebaseOptions(
-    //   apiKey: "AIzaSyB6iDZDL3tO-yAersYbFZ12AMX4xb9zyKY",
-    //   authDomain: "posflutter-ce800.firebaseapp.com",
-    //   projectId: "posflutter-ce800",
-    //   storageBucket: "posflutter-ce800.appspot.com",
-    //   messagingSenderId: "1040203320865",
-    //   appId: "1:1040203320865:web:6b4cc94800c101d7d95d60",
-    //   measurementId: "G-CS11N55Z1E",
-    //   databaseURL: 'https://posflutter-ce800-default-rtdb.firebaseio.com',
-    // ),
+  try {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp(
+      name: appName,
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    FirebaseDatabase.instance.setPersistenceEnabled(true);
 
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  FirebaseDatabase.instance.setPersistenceEnabled(true);
-
-  runApp(
-    pro.MultiProvider(
-      providers: [
-        pro.ChangeNotifierProvider(create: (context) => VisibilityProvider()),
-        pro.ChangeNotifierProvider(create: (context) => ColorProvider()),
-      ],
-      child: const ProviderScope(
-        child: MyApp(),
+    runApp(
+      pro.MultiProvider(
+        providers: [
+          pro.ChangeNotifierProvider(create: (context) => VisibilityProvider()),
+          pro.ChangeNotifierProvider(create: (context) => ColorProvider()),
+        ],
+        child: const ProviderScope(
+          child: MyApp(),
+        ),
       ),
-    ),
-  );
+    );
+  } catch (e) {
+    print(e);
+  }
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -135,9 +126,7 @@ class _MyAppState extends State<MyApp> {
             '/Stock': (context) => const StockList(),
             '/Purchase': (context) => const PurchaseContacts(),
             '/Delivery': (context) => const DeliveryAddress(),
-            '/Reports': (context) => Reports(
-                  isFromHome: false,
-                ),
+            '/Reports': (context) => Reports(isFromHome: false),
             '/Due List': (context) => const DueCalculationContactScreen(),
             '/PaymentOptions': (context) => const PaymentOptions(),
             '/Sales List': (context) => const SalesListScreen(),

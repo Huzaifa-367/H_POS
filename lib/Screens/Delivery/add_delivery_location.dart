@@ -187,9 +187,12 @@ class _AddDeliveryState extends State<AddDelivery> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TabButton(
-                    background:
-                        addressType == 'Home' ? Constants.kMainColor! : kDarkWhite,
-                    text: addressType == 'Home' ? kDarkWhite : Constants.kMainColor!,
+                    background: addressType == 'Home'
+                        ? Constants.kMainColor
+                        : kDarkWhite,
+                    text: addressType == 'Home'
+                        ? kDarkWhite
+                        : Constants.kMainColor,
                     title: 'Home',
                     press: () {
                       setState(() {
@@ -201,9 +204,12 @@ class _AddDeliveryState extends State<AddDelivery> {
                     width: 20.0,
                   ),
                   TabButton(
-                    background:
-                        addressType == 'Office' ? Constants.kMainColor! : kDarkWhite,
-                    text: addressType == 'Office' ? kDarkWhite : Constants.kMainColor!,
+                    background: addressType == 'Office'
+                        ? Constants.kMainColor
+                        : kDarkWhite,
+                    text: addressType == 'Office'
+                        ? kDarkWhite
+                        : Constants.kMainColor,
                     title: 'Office',
                     press: () {
                       setState(() {
@@ -215,9 +221,12 @@ class _AddDeliveryState extends State<AddDelivery> {
                     width: 20.0,
                   ),
                   TabButton(
-                    background:
-                        addressType == 'Other' ? Constants.kMainColor! : kDarkWhite,
-                    text: addressType == 'Other' ? kDarkWhite : Constants.kMainColor!,
+                    background: addressType == 'Other'
+                        ? Constants.kMainColor
+                        : kDarkWhite,
+                    text: addressType == 'Other'
+                        ? kDarkWhite
+                        : Constants.kMainColor,
                     title: 'Other',
                     press: () {
                       setState(() {
@@ -230,7 +239,8 @@ class _AddDeliveryState extends State<AddDelivery> {
               const SizedBox(height: 15.0),
               ButtonGlobalWithoutIcon(
                 buttontext: lang.S.of(context).apply,
-                buttonDecoration: kButtonDecoration.copyWith(color: Constants.kMainColor),
+                buttonDecoration:
+                    kButtonDecoration.copyWith(color: Constants.kMainColor),
                 onPressed: () async {
                   try {
                     EasyLoading.show(status: 'Loading...', dismissOnTap: false);
@@ -238,7 +248,7 @@ class _AddDeliveryState extends State<AddDelivery> {
                     final DatabaseReference _deliveryInformationRef =
                         FirebaseDatabase.instance
                             // ignore: deprecated_member_use
-                            .reference()
+                            .ref()
                             .child(constUserId)
                             .child('Delivery Addresses');
                     DeliveryModel deliveryModel = DeliveryModel(

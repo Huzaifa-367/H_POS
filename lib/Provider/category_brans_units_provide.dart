@@ -3,7 +3,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_pos/GlobalComponents/Model/category_model.dart';
 import 'package:mobile_pos/Screens/Products/Model/brands_model.dart';
-import 'package:mobile_pos/repository/category,brans,units_repo.dart';
+import 'package:mobile_pos/repository/category_brans_units_repo.dart';
 
 import '../Screens/Products/Model/unit_model.dart';
 

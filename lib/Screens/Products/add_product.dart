@@ -27,12 +27,10 @@ import '../../Provider/product_provider.dart';
 import '../../constant.dart';
 import '../../currency.dart';
 import '../Home/home.dart';
-import 'package:mobile_pos/generated/l10n.dart' as lang;
 
 // ignore: must_be_immutable
 class AddProduct extends StatefulWidget {
-  AddProduct({Key? key, this.catName, this.unitsName, this.brandName})
-      : super(key: key);
+  AddProduct({super.key, this.catName, this.unitsName, this.brandName});
 
   // ignore: prefer_typing_uninitialized_variables
   var catName;
@@ -167,7 +165,7 @@ class _AddProductState extends State<AddProduct> {
                   shrinkWrap: true,
                   query: FirebaseDatabase.instance
                       // ignore: deprecated_member_use
-                      .reference()
+                      .ref()
                       .child(constUserId)
                       .child('Products'),
                   itemBuilder: (context, snapshot, animation, index) {
@@ -201,16 +199,20 @@ class _AddProductState extends State<AddProduct> {
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       labelText: lang.S.of(context).productName,
                       hintText: 'Realme GT Panel',
-                      border: const OutlineInputBorder(),
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                      ),
                       focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(50.0)),
                         borderSide: BorderSide(
-                            color:
-                                Constants.kMainColor!), // Change the border color when focused
+                            color: Constants
+                                .kMainColor), // Change the border color when focused
                       ),
                       enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(50.0)),
                         borderSide: BorderSide(
-                            color:
-                                Constants().kBgColor), // Change the border color when not focused
+                            color: Constants()
+                                .kBgColor), // Change the border color when not focused
                       ),
                     ),
                   ),
@@ -265,13 +267,13 @@ class _AddProductState extends State<AddProduct> {
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants.kMainColor!), // Change the border color when focused
+                                  color: Constants
+                                      .kMainColor), // Change the border color when focused
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants().kBgColor), // Change the border color when not focused
+                                  color: Constants()
+                                      .kBgColor), // Change the border color when not focused
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             labelText: lang.S.of(context).size,
@@ -294,13 +296,13 @@ class _AddProductState extends State<AddProduct> {
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants.kMainColor!), // Change the border color when focused
+                                  color: Constants
+                                      .kMainColor), // Change the border color when focused
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants().kBgColor), // Change the border color when not focused
+                                  color: Constants()
+                                      .kBgColor), // Change the border color when not focused
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             labelText: lang.S.of(context).color,
@@ -327,13 +329,13 @@ class _AddProductState extends State<AddProduct> {
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants.kMainColor!), // Change the border color when focused
+                                  color: Constants
+                                      .kMainColor), // Change the border color when focused
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants().kBgColor), // Change the border color when not focused
+                                  color: Constants()
+                                      .kBgColor), // Change the border color when not focused
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             labelText: lang.S.of(context).weight,
@@ -356,13 +358,13 @@ class _AddProductState extends State<AddProduct> {
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants.kMainColor!), // Change the border color when focused
+                                  color: Constants
+                                      .kMainColor), // Change the border color when focused
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants().kBgColor), // Change the border color when not focused
+                                  color: Constants()
+                                      .kBgColor), // Change the border color when not focused
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             labelText: lang.S.of(context).capacity,
@@ -386,13 +388,13 @@ class _AddProductState extends State<AddProduct> {
                     decoration: InputDecoration(
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                            color:
-                                Constants.kMainColor!), // Change the border color when focused
+                            color: Constants
+                                .kMainColor), // Change the border color when focused
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                            color:
-                                Constants().kBgColor), // Change the border color when not focused
+                            color: Constants()
+                                .kBgColor), // Change the border color when not focused
                       ),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       labelText: lang.S.of(context).type,
@@ -466,13 +468,13 @@ class _AddProductState extends State<AddProduct> {
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants.kMainColor!), // Change the border color when focused
+                                  color: Constants
+                                      .kMainColor), // Change the border color when focused
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants().kBgColor), // Change the border color when not focused
+                                  color: Constants()
+                                      .kBgColor), // Change the border color when not focused
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             labelText: lang.S.of(context).productCode,
@@ -494,7 +496,7 @@ class _AddProductState extends State<AddProduct> {
                             padding: const EdgeInsets.all(5.0),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8.0),
-                              border: Border.all(color: Constants.kMainColor!),
+                              border: Border.all(color: Constants.kMainColor),
                             ),
                             child: const Image(
                               image: AssetImage('images/barcode.png'),
@@ -520,13 +522,13 @@ class _AddProductState extends State<AddProduct> {
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants.kMainColor!), // Change the border color when focused
+                                  color: Constants
+                                      .kMainColor), // Change the border color when focused
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants().kBgColor), // Change the border color when not focused
+                                  color: Constants()
+                                      .kBgColor), // Change the border color when not focused
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             labelText: lang.S.of(context).stock,
@@ -591,13 +593,13 @@ class _AddProductState extends State<AddProduct> {
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants.kMainColor!), // Change the border color when focused
+                                  color: Constants
+                                      .kMainColor), // Change the border color when focused
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants().kBgColor), // Change the border color when not focused
+                                  color: Constants()
+                                      .kBgColor), // Change the border color when not focused
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             labelText: lang.S.of(context).purchasePrice,
@@ -620,13 +622,13 @@ class _AddProductState extends State<AddProduct> {
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants.kMainColor!), // Change the border color when focused
+                                  color: Constants
+                                      .kMainColor), // Change the border color when focused
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants().kBgColor), // Change the border color when not focused
+                                  color: Constants()
+                                      .kBgColor), // Change the border color when not focused
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             labelText: lang.S.of(context).salePrice,
@@ -653,13 +655,13 @@ class _AddProductState extends State<AddProduct> {
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants.kMainColor!), // Change the border color when focused
+                                  color: Constants
+                                      .kMainColor), // Change the border color when focused
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants().kBgColor), // Change the border color when not focused
+                                  color: Constants()
+                                      .kBgColor), // Change the border color when not focused
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             labelText: lang.S.of(context).wholeSalePrice,
@@ -682,13 +684,13 @@ class _AddProductState extends State<AddProduct> {
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants.kMainColor!), // Change the border color when focused
+                                  color: Constants
+                                      .kMainColor), // Change the border color when focused
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants().kBgColor), // Change the border color when not focused
+                                  color: Constants()
+                                      .kBgColor), // Change the border color when not focused
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             labelText: lang.S.of(context).dealerPrice,
@@ -715,13 +717,13 @@ class _AddProductState extends State<AddProduct> {
                         decoration: InputDecoration(
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                                color:
-                                    Constants.kMainColor!), // Change the border color when focused
+                                color: Constants
+                                    .kMainColor), // Change the border color when focused
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                                color:
-                                    Constants().kBgColor), // Change the border color when not focused
+                                color: Constants()
+                                    .kBgColor), // Change the border color when not focused
                           ),
                           floatingLabelBehavior: FloatingLabelBehavior.always,
                           labelText: lang.S.of(context).discount,
@@ -745,13 +747,13 @@ class _AddProductState extends State<AddProduct> {
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants.kMainColor!), // Change the border color when focused
+                                  color: Constants
+                                      .kMainColor), // Change the border color when focused
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants().kBgColor), // Change the border color when not focused
+                                  color: Constants()
+                                      .kBgColor), // Change the border color when not focused
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             labelText: lang.S.of(context).manufacturer,
@@ -787,7 +789,8 @@ class _AddProductState extends State<AddProduct> {
                                         GestureDetector(
                                           onTap: () async {
                                             pickedImage =
-                                                await _picker.pickImage(imageQuality: 20,
+                                                await _picker.pickImage(
+                                                    imageQuality: 20,
                                                     source:
                                                         ImageSource.gallery);
 
@@ -828,7 +831,8 @@ class _AddProductState extends State<AddProduct> {
                                         GestureDetector(
                                           onTap: () async {
                                             pickedImage =
-                                                await _picker.pickImage(imageQuality: 20,
+                                                await _picker.pickImage(
+                                                    imageQuality: 20,
                                                     source: ImageSource.camera);
                                             setState(() {
                                               imageFile =
@@ -873,7 +877,8 @@ class _AddProductState extends State<AddProduct> {
                             height: 120,
                             width: 120,
                             decoration: BoxDecoration(
-                              border: Border.all(color: Constants.kMainColor!, width: 1),
+                              border: Border.all(
+                                  color: Constants.kMainColor, width: 1),
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(120)),
                               image: imagePath == 'No Data'
@@ -891,7 +896,8 @@ class _AddProductState extends State<AddProduct> {
                             height: 120,
                             width: 120,
                             decoration: BoxDecoration(
-                              border: Border.all(color: Constants.kMainColor!, width: 1),
+                              border: Border.all(
+                                  color: Constants.kMainColor, width: 1),
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(120)),
                               image: DecorationImage(

@@ -7,12 +7,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile_pos/GlobalComponents/Model/category_model.dart';
 import 'package:mobile_pos/GlobalComponents/button_global.dart';
-import 'package:mobile_pos/Provider/category,brans,units_provide.dart';
+import 'package:mobile_pos/Provider/category_brans_units_provide.dart';
 import 'package:mobile_pos/constant.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class AddCategory extends StatefulWidget {
-  const AddCategory({Key? key}) : super(key: key);
+  const AddCategory({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -61,7 +61,7 @@ class _AddCategoryState extends State<AddCategory> {
               children: [
                 Visibility(
                   visible: showProgress,
-                  child:  CircularProgressIndicator(
+                  child: CircularProgressIndicator(
                     color: Constants.kMainColor,
                     strokeWidth: 5.0,
                   ),

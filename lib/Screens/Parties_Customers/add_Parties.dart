@@ -572,7 +572,7 @@ class _AddCustomerState extends State<AddCustomer> {
                             final DatabaseReference _customerInformationRef =
                                 FirebaseDatabase.instance
                                     // ignore: deprecated_member_use
-                                    .reference()
+                                    .ref()
                                     .child(constUserId)
                                     .child('Customers');
                             _customerInformationRef.keepSynced(true);

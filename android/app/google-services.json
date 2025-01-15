@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "1040203320865",
+    "firebase_url": "https://posflutter-ce800-default-rtdb.firebaseio.com",
     "project_id": "posflutter-ce800",
     "storage_bucket": "posflutter-ce800.appspot.com"
   },

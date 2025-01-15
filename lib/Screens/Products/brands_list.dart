@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mobile_pos/Provider/category,brans,units_provide.dart';
+import 'package:mobile_pos/Provider/category_brans_units_provide.dart';
 import 'package:mobile_pos/Screens/Products/Model/brands_model.dart';
 import 'package:mobile_pos/Screens/Products/add_brans_UnUsed.dart';
 import 'package:mobile_pos/constant.dart';
@@ -14,7 +14,7 @@ import 'package:mobile_pos/generated/l10n.dart' as lang;
 
 // ignore: must_be_immutable
 class BrandsList extends StatefulWidget {
-  const BrandsList({Key? key}) : super(key: key);
+  const BrandsList({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -80,8 +80,8 @@ class _BrandsListState extends State<BrandsList> {
                       flex: 2,
                       child: ButtonGlobalWithoutIcon(
                         buttontext: lang.S.of(context).save,
-                        buttonDecoration:
-                            kButtonDecoration.copyWith(color: Constants.kMainColor),
+                        buttonDecoration: kButtonDecoration.copyWith(
+                            color: Constants.kMainColor),
                         onPressed: () async {
                           bool isAlreadyAdded = false;
                           allBrands.value?.forEach((element) {
