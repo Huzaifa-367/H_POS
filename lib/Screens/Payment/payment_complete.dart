@@ -3,7 +3,7 @@ import 'package:flutter_cart/flutter_cart.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile_pos/GlobalComponents/button_global.dart';
-import 'package:mobile_pos/Screens/Home/home.dart';
+import 'package:mobile_pos/Screens/Home/Dashboard.dart';
 import 'package:mobile_pos/constant.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:mobile_pos/generated/l10n.dart' as lang;
@@ -12,7 +12,7 @@ import '../../Provider/seles_report_provider.dart';
 import '../../currency.dart';
 
 class PaymentCompleted extends StatefulWidget {
-  const PaymentCompleted({Key? key}) : super(key: key);
+  const PaymentCompleted({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -44,13 +44,17 @@ class _PaymentCompletedState extends State<PaymentCompleted> {
           actions: [
             PopupMenuButton(
               itemBuilder: (BuildContext bc) => [
-                const PopupMenuItem(value: "/addPromoCode", child: Text('Add Promo Code')),
-                const PopupMenuItem(value: "/addDiscount", child: Text('Add Discount')),
-                const PopupMenuItem(value: "/settings", child: Text('Cancel All Product')),
-                const PopupMenuItem(value: "/settings", child: Text('Vat Doesn\'t Apply')),
+                const PopupMenuItem(
+                    value: "/addPromoCode", child: Text('Add Promo Code')),
+                const PopupMenuItem(
+                    value: "/addDiscount", child: Text('Add Discount')),
+                const PopupMenuItem(
+                    value: "/settings", child: Text('Cancel All Product')),
+                const PopupMenuItem(
+                    value: "/settings", child: Text('Vat Doesn\'t Apply')),
               ],
               onSelected: (value) {
-                Navigator.pushNamed(context, '$value');
+                Navigator.pushNamed(context, value);
               },
             ),
           ],
@@ -180,12 +184,13 @@ class _PaymentCompletedState extends State<PaymentCompleted> {
               ),
               ButtonGlobalWithoutIcon(
                 buttontext: lang.S.of(context).startNewSale,
-                buttonDecoration: kButtonDecoration.copyWith(color: Constants.kMainColor),
+                buttonDecoration:
+                    kButtonDecoration.copyWith(color: Constants.kMainColor),
                 onPressed: () {
                   providerData.clearCart();
                   providerData.clearDiscount();
 
-                  const Home().launch(context);
+                  const Dashboard().launch(context);
                 },
                 buttonTextColor: Colors.white,
               ),

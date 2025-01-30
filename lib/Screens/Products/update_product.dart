@@ -7,12 +7,17 @@ import 'package:firebase_core/firebase_core.dart' as firebase_core;
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mobile_pos/GlobalComponents/Button_Widget.dart';
 import 'package:mobile_pos/GlobalComponents/button_global.dart';
+import 'package:mobile_pos/GlobalComponents/core_widgets.dart';
 import 'package:mobile_pos/Provider/product_provider.dart';
+import 'package:mobile_pos/Utils/validation_rules.dart';
 import 'package:mobile_pos/model/product_model.dart';
 import 'package:nb_utils/nb_utils.dart';
 
@@ -24,7 +29,7 @@ import 'package:mobile_pos/generated/l10n.dart' as lang;
 
 // ignore: must_be_immutable
 class UpdateProduct extends StatefulWidget {
-  UpdateProduct({Key? key, this.productModel}) : super(key: key);
+  UpdateProduct({super.key, this.productModel});
 
   ProductModel? productModel;
 
@@ -43,6 +48,35 @@ class _UpdateProductState extends State<UpdateProduct> {
   XFile? pickedImage;
   File imageFile = File('No File');
   String imagePath = 'No Data';
+  // late String productCode;
+  List<String> codeList = [];
+
+  TextEditingController productCodeController = TextEditingController();
+
+  Future<String> scanBarcodeNormal() async {
+    String barcodeScanRes;
+    try {
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+          '#ff6666', 'Cancel', true, ScanMode.BARCODE);
+    } on PlatformException {
+      barcodeScanRes = 'Failed to get platform version.';
+    }
+    if (!mounted) {
+      return '';
+    }
+    if (codeList.contains(barcodeScanRes)) {
+      EasyLoading.showError('This Product Already added!');
+    } else {
+      if (barcodeScanRes != '-1') {
+        return barcodeScanRes;
+        // setState(() {
+        //   productCode = barcodeScanRes;
+        //   promoCodeHint = barcodeScanRes;
+        // });
+      }
+    }
+    return widget.productModel!.productCode;
+  }
 
   Future<void> uploadFile(String filePath) async {
     File file = File(filePath);
@@ -90,6 +124,7 @@ class _UpdateProductState extends State<UpdateProduct> {
 
   @override
   void initState() {
+    productCodeController.text = widget.productModel!.productCode;
     getProductKey(widget.productModel!.productCode);
     updatedProductModel = widget.productModel!;
     super.initState();
@@ -217,13 +252,13 @@ class _UpdateProductState extends State<UpdateProduct> {
                     decoration: InputDecoration(
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                            color:
-                                Constants.kMainColor!), // Change the border color when focused
+                            color: Constants
+                                .kMainColor), // Change the border color when focused
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                            color:
-                                Constants().kBgColor), // Change the border color when not focused
+                            color: Constants()
+                                .kBgColor), // Change the border color when not focused
                       ),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       labelText: lang.S.of(context).productName,
@@ -275,13 +310,13 @@ class _UpdateProductState extends State<UpdateProduct> {
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants.kMainColor!), // Change the border color when focused
+                                  color: Constants
+                                      .kMainColor), // Change the border color when focused
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants().kBgColor), // Change the border color when not focused
+                                  color: Constants()
+                                      .kBgColor), // Change the border color when not focused
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             labelText: 'Size',
@@ -305,13 +340,13 @@ class _UpdateProductState extends State<UpdateProduct> {
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants.kMainColor!), // Change the border color when focused
+                                  color: Constants
+                                      .kMainColor), // Change the border color when focused
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants().kBgColor), // Change the border color when not focused
+                                  color: Constants()
+                                      .kBgColor), // Change the border color when not focused
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             labelText: lang.S.of(context).color,
@@ -339,13 +374,13 @@ class _UpdateProductState extends State<UpdateProduct> {
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants.kMainColor!), // Change the border color when focused
+                                  color: Constants
+                                      .kMainColor), // Change the border color when focused
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants().kBgColor), // Change the border color when not focused
+                                  color: Constants()
+                                      .kBgColor), // Change the border color when not focused
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             labelText: lang.S.of(context).weight,
@@ -369,13 +404,13 @@ class _UpdateProductState extends State<UpdateProduct> {
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants.kMainColor!), // Change the border color when focused
+                                  color: Constants
+                                      .kMainColor), // Change the border color when focused
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants().kBgColor), // Change the border color when not focused
+                                  color: Constants()
+                                      .kBgColor), // Change the border color when not focused
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             labelText: lang.S.of(context).capacity,
@@ -400,13 +435,13 @@ class _UpdateProductState extends State<UpdateProduct> {
                     decoration: InputDecoration(
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                            color:
-                                Constants.kMainColor!), // Change the border color when focused
+                            color: Constants
+                                .kMainColor), // Change the border color when focused
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                            color:
-                                Constants().kBgColor), // Change the border color when not focused
+                            color: Constants()
+                                .kBgColor), // Change the border color when not focused
                       ),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       labelText: lang.S.of(context).type,
@@ -443,53 +478,89 @@ class _UpdateProductState extends State<UpdateProduct> {
                   ),
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(
-                      flex: 3,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: AppTextField(
-                          readOnly: true,
-                          textFieldType: TextFieldType.NAME,
-                          decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color:
-                                      Constants.kMainColor!), // Change the border color when focused
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color:
-                                      Constants().kBgColor), // Change the border color when not focused
-                            ),
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
-                            labelText: lang.S.of(context).productCode,
-                            hintText: widget.productModel!.productCode,
-                            border: const OutlineInputBorder(),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Container(
-                          height: 60.0,
-                          width: 100.0,
-                          padding: const EdgeInsets.all(5.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8.0),
-                            border: Border.all(color: Constants.kMainColor!),
-                          ),
-                          child: const Image(
-                            image: AssetImage('images/barcode.png'),
-                          ),
-                        ),
-                      ),
+                    CustomTextFormField(
+                      hintText: lang.S.of(context).productCode,
+                      controller: productCodeController,
+                      validator: (p0) => ValidationRules().normal(p0),
+                      onChanged: (value) {
+                        setState(() {
+                          updatedProductModel.productCode = value;
+                        });
+                      },
+                      onFieldSubmitted: (value) {
+                        if (codeList.contains(value)) {
+                          EasyLoading.showError('This Product Already added!');
+                          productCodeController.clear();
+                        } else {
+                          setState(() {
+                            updatedProductModel.productCode = value;
+                          });
+                        }
+                      },
+                    ).withWidth(context.width() * 0.65),
+                    ButtonWidget(
+                      btnText: "SCAN",
+                      onPress: () async {
+                        String value = await scanBarcodeNormal();
+                        updatedProductModel.productCode = value;
+                        productCodeController.text = value;
+                        setState(() {});
+                        // print("Product Code===>>> $productCode");
+                      },
                     ),
                   ],
                 ),
+                // Row(
+                //   children: [
+                //     Expanded(
+                //       flex: 3,
+                //       child: Padding(
+                //         padding: const EdgeInsets.all(10.0),
+                //         child: AppTextField(
+                //           readOnly: true,
+                //           textFieldType: TextFieldType.NAME,
+                //           decoration: InputDecoration(
+                //             focusedBorder: OutlineInputBorder(
+                //               borderSide: BorderSide(
+                //                   color: Constants
+                //                       .kMainColor), // Change the border color when focused
+                //             ),
+                //             enabledBorder: OutlineInputBorder(
+                //               borderSide: BorderSide(
+                //                   color: Constants()
+                //                       .kBgColor), // Change the border color when not focused
+                //             ),
+                //             floatingLabelBehavior: FloatingLabelBehavior.always,
+                //             labelText: lang.S.of(context).productCode,
+                //             hintText: widget.productModel!.productCode,
+                //             border: const OutlineInputBorder(),
+                //           ),
+                //         ),
+                //       ),
+                //     ),
+                //     Expanded(
+                //       flex: 1,
+                //       child: Padding(
+                //         padding: const EdgeInsets.all(10.0),
+                //         child: Container(
+                //           height: 60.0,
+                //           width: 100.0,
+                //           padding: const EdgeInsets.all(5.0),
+                //           decoration: BoxDecoration(
+                //             borderRadius: BorderRadius.circular(8.0),
+                //             border: Border.all(color: Constants.kMainColor),
+                //           ),
+                //           child: const Image(
+                //             image: AssetImage('images/barcode.png'),
+                //           ),
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
+
                 Row(
                   children: [
                     Expanded(
@@ -506,13 +577,13 @@ class _UpdateProductState extends State<UpdateProduct> {
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants.kMainColor!), // Change the border color when focused
+                                  color: Constants
+                                      .kMainColor), // Change the border color when focused
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants().kBgColor), // Change the border color when not focused
+                                  color: Constants()
+                                      .kBgColor), // Change the border color when not focused
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             labelText: lang.S.of(context).stock,
@@ -570,13 +641,13 @@ class _UpdateProductState extends State<UpdateProduct> {
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants.kMainColor!), // Change the border color when focused
+                                  color: Constants
+                                      .kMainColor), // Change the border color when focused
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants().kBgColor), // Change the border color when not focused
+                                  color: Constants()
+                                      .kBgColor), // Change the border color when not focused
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             labelText: lang.S.of(context).purchasePrice,
@@ -600,13 +671,13 @@ class _UpdateProductState extends State<UpdateProduct> {
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants.kMainColor!), // Change the border color when focused
+                                  color: Constants
+                                      .kMainColor), // Change the border color when focused
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants().kBgColor), // Change the border color when not focused
+                                  color: Constants()
+                                      .kBgColor), // Change the border color when not focused
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             labelText: lang.S.of(context).salePrice,
@@ -635,13 +706,13 @@ class _UpdateProductState extends State<UpdateProduct> {
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants.kMainColor!), // Change the border color when focused
+                                  color: Constants
+                                      .kMainColor), // Change the border color when focused
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants().kBgColor), // Change the border color when not focused
+                                  color: Constants()
+                                      .kBgColor), // Change the border color when not focused
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             labelText: lang.S.of(context).wholeSalePrice,
@@ -665,13 +736,13 @@ class _UpdateProductState extends State<UpdateProduct> {
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants.kMainColor!), // Change the border color when focused
+                                  color: Constants
+                                      .kMainColor), // Change the border color when focused
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants().kBgColor), // Change the border color when not focused
+                                  color: Constants()
+                                      .kBgColor), // Change the border color when not focused
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             labelText: lang.S.of(context).dealerPrice,
@@ -699,13 +770,13 @@ class _UpdateProductState extends State<UpdateProduct> {
                         decoration: InputDecoration(
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                                color:
-                                    Constants.kMainColor!), // Change the border color when focused
+                                color: Constants
+                                    .kMainColor), // Change the border color when focused
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                                color:
-                                    Constants().kBgColor), // Change the border color when not focused
+                                color: Constants()
+                                    .kBgColor), // Change the border color when not focused
                           ),
                           floatingLabelBehavior: FloatingLabelBehavior.always,
                           labelText: lang.S.of(context).discount,
@@ -729,13 +800,13 @@ class _UpdateProductState extends State<UpdateProduct> {
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants.kMainColor!), // Change the border color when focused
+                                  color: Constants
+                                      .kMainColor), // Change the border color when focused
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants().kBgColor), // Change the border color when not focused
+                                  color: Constants()
+                                      .kBgColor), // Change the border color when not focused
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             labelText: lang.S.of(context).manufacturer,
@@ -767,7 +838,8 @@ class _UpdateProductState extends State<UpdateProduct> {
                                   children: [
                                     GestureDetector(
                                       onTap: () async {
-                                        pickedImage = await _picker.pickImage(imageQuality: 20,
+                                        pickedImage = await _picker.pickImage(
+                                            imageQuality: 20,
                                             source: ImageSource.gallery);
                                         setState(() {
                                           imageFile = File(pickedImage!.path);
@@ -803,7 +875,8 @@ class _UpdateProductState extends State<UpdateProduct> {
                                     ),
                                     GestureDetector(
                                       onTap: () async {
-                                        pickedImage = await _picker.pickImage(imageQuality: 20,
+                                        pickedImage = await _picker.pickImage(
+                                            imageQuality: 20,
                                             source: ImageSource.camera);
                                         setState(() {
                                           imageFile = File(pickedImage!.path);
@@ -847,7 +920,8 @@ class _UpdateProductState extends State<UpdateProduct> {
                         height: 120,
                         width: 120,
                         decoration: BoxDecoration(
-                          border: Border.all(color: Constants.kMainColor!, width: 1),
+                          border:
+                              Border.all(color: Constants.kMainColor, width: 1),
                           borderRadius:
                               const BorderRadius.all(Radius.circular(120)),
                           image: imagePath == 'No Data'

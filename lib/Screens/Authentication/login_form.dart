@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobile_pos/GlobalComponents/Button_Widget.dart';
 import 'package:mobile_pos/GlobalComponents/button_global.dart';
+import 'package:mobile_pos/GlobalComponents/core_widgets.dart';
 import 'package:mobile_pos/Screens/Authentication/register_form.dart';
+import 'package:mobile_pos/Utils/validation_rules.dart';
 import 'package:mobile_pos/repository/login_repo.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '../../constant.dart';
@@ -59,78 +62,39 @@ class _LoginFormState extends State<LoginForm> {
                       child: Column(
                         children: [
                           const SizedBox(height: 20),
-                          TextFormField(
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: InputDecoration(
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Constants
-                                        .kMainColor), // Change the border color when focused
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Constants()
-                                        .kBgColor), // Change the border color when not focused
-                              ),
-                              border: const OutlineInputBorder(),
-                              labelText: lang.S.of(context).emailText,
-                              hintText:
-                                  lang.S.of(context).enterYourEmailAddress,
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Email can\'n be empty';
-                              } else if (!value.contains('@')) {
-                                return 'Please enter a valid email';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                              loginProvider.email = value!;
+                          CustomTextFormField(
+                            hintText: lang.S.of(context).enterYourEmailAddress,
+                            validator: (p0) => ValidationRules().email(p0),
+                            onChanged: (p0) {
+                              setState(() {
+                                loginProvider.email = p0;
+                              });
                             },
                           ),
                           const SizedBox(height: 20),
-                          TextFormField(
-                            keyboardType: TextInputType.text,
-                            obscureText: showPassword,
-                            decoration: InputDecoration(
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Constants
-                                        .kMainColor), // Change the border color when focused
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Constants()
-                                        .kBgColor), // Change the border color when not focused
-                              ),
-                              border: const OutlineInputBorder(),
-                              labelText: lang.S.of(context).password,
-                              hintText: lang.S.of(context).pleaseEnterAPassword,
-                              suffixIcon: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    showPassword = !showPassword;
-                                  });
-                                },
-                                icon: Icon(
-                                  showPassword
-                                      ? Icons.visibility_off
-                                      : Icons.visibility,
-                                  color: Constants.kMainColor,
-                                ),
+                          CustomTextFormField(
+                            hintText: lang.S.of(context).password,
+                            validator: (p0) => ValidationRules().normal(p0),
+                            isPasswordTextField: showPassword,
+                            suffixIconConstraints:
+                                BoxConstraints(minWidth: 23, minHeight: 23),
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  showPassword = !showPassword;
+                                });
+                              },
+                              icon: Icon(
+                                showPassword
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                                color: Constants.kMainColor,
                               ),
                             ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Password can\'t be empty';
-                              } else if (value.length < 4) {
-                                return 'Please enter a bigger password';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                              loginProvider.password = value!;
+                            onChanged: (p0) {
+                              setState(() {
+                                loginProvider.password = p0;
+                              });
                             },
                           ),
                         ],
@@ -155,16 +119,14 @@ class _LoginFormState extends State<LoginForm> {
                       ),
                     ],
                   ).visible(isEmailLogin),
-                  ButtonGlobalWithoutIcon(
-                      buttontext: lang.S.of(context).logIn,
-                      buttonDecoration: kButtonDecoration.copyWith(
-                          color: Constants.kMainColor),
-                      onPressed: () {
-                        if (validateAndSave()) {
-                          loginProvider.signIn(context);
-                        }
-                      },
-                      buttonTextColor: Colors.white),
+                  CustomStretchedTextButtonWidget(
+                    buttonText: lang.S.of(context).logIn,
+                    onTap: () {
+                      if (validateAndSave()) {
+                        loginProvider.signIn(context);
+                      }
+                    },
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [

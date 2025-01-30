@@ -1,36 +1,58 @@
 import 'dart:convert';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile_pos/Provider/Report_Click_Provider.dart';
 import 'package:mobile_pos/model/user_role_model.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:flutter/material.dart';
+import 'package:mobile_pos/Utils/helpers.dart';
 
 // const Constants.kMainColor = Color(0xFF3F8CFF);
 // const Constants.kMainColor = Color(0xFF007AD0);
 
-class ColorProvider with ChangeNotifier {
-  Color _selectedColor = const Color.fromARGB(255, 58, 209, 161);
+// class ColorProvider with ChangeNotifier {
+//   Color _selectedColor = const Color.fromARGB(255, 58, 209, 161);
 
-  Color get selectedColor => _selectedColor;
+//   Color get selectedColor => _selectedColor;
 
-  void setSelectedColor(Color colorName) async {
-    _selectedColor = colorName;
-// Update Constants.kMainColor in the Constants class
-    Constants.kMainColor = _selectedColor;
-    notifyListeners();
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('selectedColor', _selectedColor.toString());
-    print("Saved Color Prefrences:  ${_selectedColor.toString()}");
-  }
-}
+//   void setSelectedColor(Color colorName) async {
+//     _selectedColor = colorName;
+// // Update Constants.kMainColor in the Constants class
+//     Constants.kMainColor = _selectedColor;
+//     notifyListeners();
+//     SharedPreferences prefs = await SharedPreferences.getInstance();
+//     prefs.setString('selectedColor', _selectedColor.toString());
+//     print("Saved Color Prefrences:  ${_selectedColor.toString()}");
+//   }
+// }
 
-Color? selectedColor;
-Color newColor = Colors.lightGreen;
+// Color? selectedColor;
+// Color newColor = Colors.lightGreen;
 
 class Constants {
-  static final ColorProvider colorProvider = ColorProvider();
-  static Color kMainColor = colorProvider.selectedColor;
+  // static final ColorProvider colorProvider = ColorProvider();
+  // static Color kMainColor = colorProvider.selectedColor;
+  static Color kMainColor = AppColors.primaryColor;
   Color kBgColor = kMainColor.withOpacity(0.1);
+}
+
+/// This file contains custom colors used throughout the app
+class AppColors {
+  static const Color primaryColor = Color(0xFF177987);
+  static const Color primaryColor2 = Color(0xFF6A49F2);
+  static const Color secondaryColor = Color(0xFFF79C39);
+  static const Color tertiaryColor = Color(0xFF4BCBF9);
+  static const Color successColor = Color(0xFF48E98A);
+  static const Color alertColor = Color(0xFFFF0011);
+  static const Color darkColor = Color(0xFF292B49);
+  static const Color bodyTextColor = Color(0xFF888AA0);
+  static const Color lineShapeColor = Color(0xFFEBEDF9);
+  static const Color shadeColor1 = Color(0xFFF4F5FA);
+  static const Color shadeColor2 = Color(0xFFF7F7FB);
+  static const Color bgColor = Color(0xFFFFFFFF);
+
+  /// Custom MaterialColor from Helper function
+  static final MaterialColor primaryMaterialColor =
+      Helper.generateMaterialColor(AppColors.primaryColor);
 }
 
 double totalExpense = 0;

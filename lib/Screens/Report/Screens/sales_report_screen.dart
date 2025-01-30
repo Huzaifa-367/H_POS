@@ -15,12 +15,12 @@ import '../../../GlobalComponents/generate_pdf.dart';
 import '../../../Provider/profile_provider.dart';
 import '../../../constant.dart';
 import '../../../currency.dart';
-import '../../Home/home.dart';
+import '../../Home/Dashboard.dart';
 import '../../invoice_details/sales_invoice_details_screen.dart';
 import 'package:mobile_pos/generated/l10n.dart' as lang;
 
 class SalesReportScreen extends StatefulWidget {
-  const SalesReportScreen({Key? key}) : super(key: key);
+  const SalesReportScreen({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -70,7 +70,7 @@ class _SalesReportScreenState extends State<SalesReportScreen> {
     totalSale = 0;
     return WillPopScope(
       onWillPop: () async {
-        return await const Home().launch(context, isNewTask: true);
+        return await const Dashboard().launch(context, isNewTask: true);
       },
       child: Scaffold(
         appBar: AppBar(
@@ -106,13 +106,13 @@ class _SalesReportScreenState extends State<SalesReportScreen> {
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants.kMainColor!), // Change the border color when focused
+                                  color: Constants
+                                      .kMainColor), // Change the border color when focused
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants().kBgColor), // Change the border color when not focused
+                                  color: Constants()
+                                      .kBgColor), // Change the border color when not focused
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             labelText: lang.S.of(context).fromDate,
@@ -151,13 +151,13 @@ class _SalesReportScreenState extends State<SalesReportScreen> {
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants.kMainColor!), // Change the border color when focused
+                                  color: Constants
+                                      .kMainColor), // Change the border color when focused
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants().kBgColor), // Change the border color when not focused
+                                  color: Constants()
+                                      .kBgColor), // Change the border color when not focused
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             labelText: lang.S.of(context).toDate,
@@ -217,9 +217,10 @@ class _SalesReportScreenState extends State<SalesReportScreen> {
                                 height: 100,
                                 width: double.infinity,
                                 decoration: BoxDecoration(
-                                    color: Constants.kMainColor!.withOpacity(0.1),
+                                    color:
+                                        Constants.kMainColor.withOpacity(0.1),
                                     border: Border.all(
-                                        width: 1, color: Constants.kMainColor!),
+                                        width: 1, color: Constants.kMainColor),
                                     borderRadius: const BorderRadius.all(
                                         Radius.circular(15))),
                                 child: Row(
@@ -260,7 +261,8 @@ class _SalesReportScreenState extends State<SalesReportScreen> {
                                       padding: const EdgeInsets.all(5),
                                       decoration: BoxDecoration(
                                           border: Border.all(
-                                              color: Constants.kMainColor!, width: 1),
+                                              color: Constants.kMainColor,
+                                              width: 1),
                                           borderRadius: const BorderRadius.all(
                                               Radius.circular(8))),
                                       child: DropdownButtonHideUnderline(
@@ -553,8 +555,8 @@ class _SalesReportScreenState extends State<SalesReportScreen> {
                                                               icon: Icon(
                                                                 FeatherIcons
                                                                     .printer,
-                                                                color:
-                                                                    Constants.kMainColor,
+                                                                color: Constants
+                                                                    .kMainColor,
                                                               )),
                                                           IconButton(
                                                               onPressed: () => GeneratePdf()
@@ -566,8 +568,8 @@ class _SalesReportScreenState extends State<SalesReportScreen> {
                                                               icon: Icon(
                                                                 Icons
                                                                     .picture_as_pdf,
-                                                                color:
-                                                                    Constants.kMainColor,
+                                                                color: Constants
+                                                                    .kMainColor,
                                                               )),
                                                         ],
                                                       );
@@ -617,10 +619,10 @@ class _SalesReportScreenState extends State<SalesReportScreen> {
                 }, error: (e, stack) {
                   return Text(e.toString());
                 }, loading: () {
-                   return Center(
-                  child: CircularProgressIndicator(
-                color: Constants.kMainColor,
-              ));
+                  return Center(
+                      child: CircularProgressIndicator(
+                    color: Constants.kMainColor,
+                  ));
                 }),
               ],
             ),

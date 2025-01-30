@@ -26,12 +26,12 @@ import '../../model/personal_information_model.dart';
 import '../../model/print_transaction_model.dart';
 import '../../subscription.dart';
 import '../Parties_Customers/Model/customer_model.dart';
-import '../Home/home.dart';
+import '../Home/Dashboard.dart';
 import 'package:mobile_pos/generated/l10n.dart' as lang;
 
 // ignore: must_be_immutable
 class AddSalesScreen extends StatefulWidget {
-  AddSalesScreen({Key? key, required this.customerModel}) : super(key: key);
+  AddSalesScreen({super.key, required this.customerModel});
 
   CustomerModel customerModel;
 
@@ -841,7 +841,7 @@ class _AddSalesScreenState extends State<AddSalesScreen> {
                       Expanded(
                           child: GestureDetector(
                         onTap: () async {
-                          const Home().launch(context);
+                          const Dashboard().launch(context);
                           // if (providerData.cartItemList.isNotEmpty) {
                           //   if (widget.customerModel.type == 'Guest' && dueAmount > 0) {
                           //     EasyLoading.showError('Due is not available for guest');

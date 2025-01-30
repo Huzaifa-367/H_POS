@@ -14,12 +14,12 @@ import '../../../constant.dart';
 import '../../../model/print_transaction_model.dart';
 import '../../Provider/add_to_cart_purchase.dart';
 import '../../currency.dart';
-import '../Home/home.dart';
+import '../Home/Dashboard.dart';
 import '../invoice_details/purchase_invoice_details.dart';
 import 'package:mobile_pos/generated/l10n.dart' as lang;
 
 class PurchaseListScreen extends StatefulWidget {
-  const PurchaseListScreen({Key? key}) : super(key: key);
+  const PurchaseListScreen({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -31,7 +31,7 @@ class _PurchaseReportState extends State<PurchaseListScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        return await const Home().launch(context, isNewTask: true);
+        return await const Dashboard().launch(context, isNewTask: true);
       },
       child: Scaffold(
         appBar: AppBar(
@@ -278,7 +278,8 @@ class _PurchaseReportState extends State<PurchaseListScreen> {
                                                     },
                                                     icon: Icon(
                                                       FeatherIcons.printer,
-                                                      color: Constants.kMainColor,
+                                                      color:
+                                                          Constants.kMainColor,
                                                     )),
                                                 IconButton(
                                                     onPressed: () => GeneratePdf()
@@ -289,7 +290,8 @@ class _PurchaseReportState extends State<PurchaseListScreen> {
                                                             context),
                                                     icon: Icon(
                                                       Icons.picture_as_pdf,
-                                                      color: Constants.kMainColor,
+                                                      color:
+                                                          Constants.kMainColor,
                                                     )),
                                                 IconButton(
                                                     onPressed: () {
@@ -302,7 +304,8 @@ class _PurchaseReportState extends State<PurchaseListScreen> {
                                                     },
                                                     icon: Icon(
                                                       FeatherIcons.edit,
-                                                      color: Constants.kMainColor,
+                                                      color:
+                                                          Constants.kMainColor,
                                                     )),
                                               ],
                                             );
@@ -340,7 +343,7 @@ class _PurchaseReportState extends State<PurchaseListScreen> {
             }, error: (e, stack) {
               return Text(e.toString());
             }, loading: () {
-               return Center(
+              return Center(
                   child: CircularProgressIndicator(
                 color: Constants.kMainColor,
               ));

@@ -24,7 +24,7 @@ import 'package:mobile_pos/generated/l10n.dart' as lang;
 import 'package:mobile_pos/constant.dart' as cons;
 
 class SettingScreen extends StatefulWidget {
-  const SettingScreen({Key? key}) : super(key: key);
+  const SettingScreen({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -83,7 +83,7 @@ class _SettingScreenState extends State<SettingScreen> {
       child: Consumer(builder: (context, ref, _) {
         AsyncValue<PersonalInformationModel> userProfileDetails =
             ref.watch(profileDetailsProvider);
-        ColorProvider colorProvider = context.watch<ColorProvider>();
+        // ColorProvider colorProvider = context.watch<ColorProvider>();
 
         return Scaffold(
           // backgroundColor: Constants().kBgColor,
@@ -145,8 +145,8 @@ class _SettingScreenState extends State<SettingScreen> {
                               kPremiumPlanColor2.withOpacity(0.5),
                           activeColor: Constants.kMainColor,
                           trackOutlineColor:
-                              MaterialStateProperty.resolveWith((states) {
-                            if (states.contains(MaterialState.selected)) {
+                              WidgetStateProperty.resolveWith((states) {
+                            if (states.contains(WidgetState.selected)) {
                               return Constants.kMainColor;
                             }
                             return kPremiumPlanColor2.withOpacity(0.8);
@@ -161,39 +161,40 @@ class _SettingScreenState extends State<SettingScreen> {
                           },
                         ),
                       ),
-                      SettingsItem(
-                        onTap: () {},
-                        icon: Icons.color_lens_rounded,
-                        iconStyle: IconStyle(
-                          iconsColor: Colors.white,
-                          withBackground: true,
-                          backgroundColor: Constants.kMainColor,
-                        ),
-                        title: lang.S.of(context).themecolor,
-                        subtitle: "Select your theme?",
-                        trailing: IconButton(
-                            onPressed: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return Dialog(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(12.0),
-                                      ),
-                                      // ignore: sized_box_for_whitespace
-                                      child: const SizedBox(
-                                        height: 450.0,
-                                        child: DropDown(),
-                                      ),
-                                    );
-                                  });
-                            },
-                            icon: Icon(
-                              Icons.colorize,
-                              color: Constants.kMainColor,
-                            )),
-                      ),
+                      // SettingsItem(
+                      //   onTap: () {},
+                      //   icon: Icons.color_lens_rounded,
+                      //   iconStyle: IconStyle(
+                      //     iconsColor: Colors.white,
+                      //     withBackground: true,
+                      //     backgroundColor: Constants.kMainColor,
+                      //   ),
+                      //   title: lang.S.of(context).themecolor,
+                      //   subtitle: "Select your theme?",
+                      //   trailing: IconButton(
+                      //       onPressed: () {
+                      //         showDialog(
+                      //             context: context,
+                      //             builder: (BuildContext context) {
+                      //               return Dialog(
+                      //                 shape: RoundedRectangleBorder(
+                      //                   borderRadius:
+                      //                       BorderRadius.circular(12.0),
+                      //                 ),
+                      //                 // ignore: sized_box_for_whitespace
+                      //                 child: const SizedBox(
+                      //                   height: 450.0,
+                      //                   child: DropDown(),
+                      //                 ),
+                      //               );
+                      //             });
+                      //       },
+                      //       icon: Icon(
+                      //         Icons.colorize,
+                      //         color: Constants.kMainColor,
+                      //       )),
+                      // ),
+
                       //const DropDown(),
 
                       ///_________subscription_____________________________________________________
@@ -336,7 +337,7 @@ class _SettingScreenState extends State<SettingScreen> {
 }
 
 class NoticationSettings extends StatefulWidget {
-  const NoticationSettings({Key? key}) : super(key: key);
+  const NoticationSettings({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -437,75 +438,75 @@ class _NoticationSettingsState extends State<NoticationSettings> {
   }
 }
 
-class DropDown extends StatefulWidget {
-  const DropDown({Key? key}) : super(key: key);
+// class DropDown extends StatefulWidget {
+//   const DropDown({super.key});
 
-  @override
-  State<DropDown> createState() => _DropDownState();
-}
+//   @override
+//   State<DropDown> createState() => _DropDownState();
+// }
 
-class _DropDownState extends State<DropDown> {
-  // Initialize selectedcolor here
-  @override
-  void initState() {
-    super.initState();
-  }
+// class _DropDownState extends State<DropDown> {
+//   // Initialize selectedcolor here
+//   @override
+//   void initState() {
+//     super.initState();
+//   }
 
-  final _colorNotifier = ValueNotifier<Color>(Colors.green);
+//   final _colorNotifier = ValueNotifier<Color>(Colors.green);
 
-  @override
-  Widget build(BuildContext context) {
-    final colorProvider = context.read<ColorProvider>();
-    return Column(
-      children: [
-        Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-            child: ValueListenableBuilder<Color>(
-              valueListenable: _colorNotifier,
-              builder: (_, color, __) {
-                return ColorPicker(
-                  initialPicker: Picker.hsv,
-                  color: Constants.kMainColor,
-                  onChanged: (value) async {
-                    color = value;
-                    newColor = value;
-                    colorProvider.setSelectedColor(value);
-                    //     // Save the selected color in SharedPreferences
-                  },
-                );
-              },
-            ),
-          ),
-        ),
-        // DropdownButton<String>(
-        //   underline: Container(
-        //     height: 1.5,
-        //     color: Constants.kMainColor,
-        //   ),
-        //   iconEnabledColor: Constants.kMainColor,
-        //   value: selectedcolor,
-        //   onChanged: (value) async {
-        //     setState(() {
-        //       selectedcolor = value!; // Update the selectedcolor variable
-        //     });
-        //     colorProvider.setSelectedColor(value!);
+//   @override
+//   Widget build(BuildContext context) {
+//     final colorProvider = context.read<ColorProvider>();
+//     return Column(
+//       children: [
+//         Center(
+//           child: Padding(
+//             padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+//             child: ValueListenableBuilder<Color>(
+//               valueListenable: _colorNotifier,
+//               builder: (_, color, __) {
+//                 return ColorPicker(
+//                   initialPicker: Picker.hsv,
+//                   color: Constants.kMainColor,
+//                   onChanged: (value) async {
+//                     color = value;
+//                     newColor = value;
+//                     colorProvider.setSelectedColor(value);
+//                     //     // Save the selected color in SharedPreferences
+//                   },
+//                 );
+//               },
+//             ),
+//           ),
+//         ),
+//         // DropdownButton<String>(
+//         //   underline: Container(
+//         //     height: 1.5,
+//         //     color: Constants.kMainColor,
+//         //   ),
+//         //   iconEnabledColor: Constants.kMainColor,
+//         //   value: selectedcolor,
+//         //   onChanged: (value) async {
+//         //     setState(() {
+//         //       selectedcolor = value!; // Update the selectedcolor variable
+//         //     });
+//         //     colorProvider.setSelectedColor(value!);
 
-        //     // Save the selected color in SharedPreferences
-        //     SharedPreferences prefs = await SharedPreferences.getInstance();
-        //     prefs.setString('selectedColor', value);
-        //   },
-        //   items: ['Light Green', 'Sky Blue', 'Orange', 'Purple', 'Pink']
-        //       .map((color) {
-        //     return DropdownMenuItem<String>(
-        //       value: color,
-        //       child: Text(color),
-        //     );
-        //   }).toList(),
-        // ),
+//         //     // Save the selected color in SharedPreferences
+//         //     SharedPreferences prefs = await SharedPreferences.getInstance();
+//         //     prefs.setString('selectedColor', value);
+//         //   },
+//         //   items: ['Light Green', 'Sky Blue', 'Orange', 'Purple', 'Pink']
+//         //       .map((color) {
+//         //     return DropdownMenuItem<String>(
+//         //       value: color,
+//         //       child: Text(color),
+//         //     );
+//         //   }).toList(),
+//         // ),
 
-        //
-      ],
-    );
-  }
-}
+//         //
+//       ],
+//     );
+//   }
+// }

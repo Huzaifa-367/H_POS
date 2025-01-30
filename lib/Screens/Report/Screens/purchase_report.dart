@@ -12,12 +12,12 @@ import '../../../Provider/profile_provider.dart';
 import '../../../constant.dart';
 import '../../../currency.dart';
 import '../../../model/print_transaction_model.dart';
-import '../../Home/home.dart';
+import '../../Home/Dashboard.dart';
 import '../../invoice_details/purchase_invoice_details.dart';
 import 'package:mobile_pos/generated/l10n.dart' as lang;
 
 class PurchaseReportScreen extends StatefulWidget {
-  const PurchaseReportScreen({Key? key}) : super(key: key);
+  const PurchaseReportScreen({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -61,7 +61,7 @@ class _PurchaseReportState extends State<PurchaseReportScreen> {
     totalPurchase = 0;
     return WillPopScope(
       onWillPop: () async {
-        return await const Home().launch(context, isNewTask: true);
+        return await const Dashboard().launch(context, isNewTask: true);
       },
       child: Scaffold(
         appBar: AppBar(
@@ -99,13 +99,13 @@ class _PurchaseReportState extends State<PurchaseReportScreen> {
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants.kMainColor!), // Change the border color when focused
+                                  color: Constants
+                                      .kMainColor), // Change the border color when focused
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants().kBgColor), // Change the border color when not focused
+                                  color: Constants()
+                                      .kBgColor), // Change the border color when not focused
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             labelText: lang.S.of(context).fromDate,
@@ -144,13 +144,13 @@ class _PurchaseReportState extends State<PurchaseReportScreen> {
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants.kMainColor!), // Change the border color when focused
+                                  color: Constants
+                                      .kMainColor), // Change the border color when focused
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants().kBgColor), // Change the border color when not focused
+                                  color: Constants()
+                                      .kBgColor), // Change the border color when not focused
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             labelText: lang.S.of(context).toDate,
@@ -208,9 +208,10 @@ class _PurchaseReportState extends State<PurchaseReportScreen> {
                                 height: 100,
                                 width: double.infinity,
                                 decoration: BoxDecoration(
-                                    color: Constants.kMainColor!.withOpacity(0.1),
+                                    color:
+                                        Constants.kMainColor.withOpacity(0.1),
                                     border: Border.all(
-                                        width: 1, color: Constants.kMainColor!),
+                                        width: 1, color: Constants.kMainColor),
                                     borderRadius: const BorderRadius.all(
                                         Radius.circular(15))),
                                 child: Row(
@@ -251,7 +252,8 @@ class _PurchaseReportState extends State<PurchaseReportScreen> {
                                       padding: const EdgeInsets.all(5),
                                       decoration: BoxDecoration(
                                         border: Border.all(
-                                            color: Constants.kMainColor!, width: 1),
+                                            color: Constants.kMainColor,
+                                            width: 1),
                                         borderRadius: const BorderRadius.all(
                                           Radius.circular(8),
                                         ),
@@ -553,8 +555,8 @@ class _PurchaseReportState extends State<PurchaseReportScreen> {
                                                               icon: Icon(
                                                                 FeatherIcons
                                                                     .printer,
-                                                                color:
-                                                                    Constants.kMainColor,
+                                                                color: Constants
+                                                                    .kMainColor,
                                                               )),
                                                           IconButton(
                                                               onPressed: () => GeneratePdf()
@@ -566,8 +568,8 @@ class _PurchaseReportState extends State<PurchaseReportScreen> {
                                                               icon: Icon(
                                                                 Icons
                                                                     .picture_as_pdf,
-                                                                color:
-                                                                    Constants.kMainColor,
+                                                                color: Constants
+                                                                    .kMainColor,
                                                               )),
                                                         ],
                                                       );
@@ -617,10 +619,10 @@ class _PurchaseReportState extends State<PurchaseReportScreen> {
                 }, error: (e, stack) {
                   return Text(e.toString());
                 }, loading: () {
-                   return Center(
-                  child: CircularProgressIndicator(
-                color: Constants.kMainColor,
-              ));
+                  return Center(
+                      child: CircularProgressIndicator(
+                    color: Constants.kMainColor,
+                  ));
                 }),
               ],
             ),

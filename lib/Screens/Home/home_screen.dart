@@ -818,62 +818,54 @@ class _HomeGridCardsState extends State<HomeGridCards> {
       return Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          SizedBox(
-            width: 120,
-            child: Card(
-              elevation: 2,
-              color: widget.color,
-              child: Column(
-                children: [
-                  TextButton(
-                    onPressed: () async {
-                      /////
-                      ///
-                      ///
-
-                      //---------- Route Navigation ------------------
-
-                      isSubUser
-                          ? checkPermission(item: widget.gridItems.title)
-                              ? await subscriptionChecker(
-                                      item: widget.gridItems.title)
-                                  ? Navigator.of(context)
-                                      .pushNamed('/${widget.gridItems.route}')
-                                  : EasyLoading.showError(
-                                      'Update your plan first,\nyour limit is over.')
-                              : EasyLoading.showError(
-                                  'Sorry, you have no permission to access this service')
-                          : await subscriptionChecker(
-                                  item: widget.gridItems.title)
-                              ? widget.gridItems.title !=
-                                      lang.S.of(context).reports
-                                  ? Navigator.of(context)
-                                      .pushNamed('/${widget.gridItems.route}')
-                                  : context
-                                      .read<VisibilityProvider>()
-                                      .toggleVisibility()
-                              : EasyLoading.showError(
-                                  'Update your plan first,\nyour limit is over.');
+          GestureDetector(
+            onTap: () async {
+              isSubUser
+                  ? checkPermission(item: widget.gridItems.title)
+                      ? await subscriptionChecker(item: widget.gridItems.title)
+                          ? Navigator.of(context)
+                              .pushNamed('/${widget.gridItems.route}')
+                          : EasyLoading.showError(
+                              'Update your plan first,\nyour limit is over.')
+                      : EasyLoading.showError(
+                          'Sorry, you have no permission to access this service')
+                  : await subscriptionChecker(item: widget.gridItems.title)
+                      ? widget.gridItems.title != lang.S.of(context).reports
+                          ? Navigator.of(context)
+                              .pushNamed('/${widget.gridItems.route}')
+                          : context
+                              .read<VisibilityProvider>()
+                              .toggleVisibility()
+                      : EasyLoading.showError(
+                          'Update your plan first,\nyour limit is over.');
 
 /////
-                      //-----------------------   Auto Scroll To Report List      -------------------------------
-                      //
+              //-----------------------   Auto Scroll To Report List      -------------------------------
+              //
 
-                      // widget.gridItems.title == lang.S.of(context).reports
-                      //     ? Future.delayed(
-                      //         const Duration(milliseconds: 100),
-                      //         () async {
-                      //           await Scrollable.ensureVisible(
-                      //             listKey.currentContext!,
-                      //             duration:
-                      //                 const Duration(milliseconds: 800),
-                      //           );
-                      //         },
-                      //       )
-                      //     : null;
-                    },
-                    child: Container(
-                      height: 50,
+              // widget.gridItems.title == lang.S.of(context).reports
+              //     ? Future.delayed(
+              //         const Duration(milliseconds: 100),
+              //         () async {
+              //           await Scrollable.ensureVisible(
+              //             listKey.currentContext!,
+              //             duration:
+              //                 const Duration(milliseconds: 800),
+              //           );
+              //         },
+              //       )
+              //     : null;
+            },
+            child: SizedBox(
+              width: 120,
+              child: Card(
+                elevation: 2,
+                color: widget.color,
+                child: Column(
+                  children: [
+                    SizedBox(height: 10),
+                    Container(
+                      height: 45,
                       width: 50,
                       decoration: BoxDecoration(
                         image: DecorationImage(
@@ -884,8 +876,8 @@ class _HomeGridCardsState extends State<HomeGridCards> {
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

@@ -12,12 +12,12 @@ import '../../../Provider/profile_provider.dart';
 import '../../../constant.dart';
 import '../../../currency.dart';
 import '../../../model/print_transaction_model.dart';
-import '../../Home/home.dart';
+import '../../Home/Dashboard.dart';
 import '../../invoice_details/due_invoice_details.dart';
 import 'package:mobile_pos/generated/l10n.dart' as lang;
 
 class DueReportScreen extends StatefulWidget {
-  const DueReportScreen({Key? key}) : super(key: key);
+  const DueReportScreen({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -63,7 +63,7 @@ class _DueReportScreenState extends State<DueReportScreen> {
     totalPaidDue = 0;
     return WillPopScope(
       onWillPop: () async {
-        return await const Home().launch(context, isNewTask: true);
+        return await const Dashboard().launch(context, isNewTask: true);
       },
       child: Scaffold(
         appBar: AppBar(
@@ -100,13 +100,13 @@ class _DueReportScreenState extends State<DueReportScreen> {
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants.kMainColor!), // Change the border color when focused
+                                  color: Constants
+                                      .kMainColor), // Change the border color when focused
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants().kBgColor), // Change the border color when not focused
+                                  color: Constants()
+                                      .kBgColor), // Change the border color when not focused
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             labelText: lang.S.of(context).fromDate,
@@ -146,13 +146,13 @@ class _DueReportScreenState extends State<DueReportScreen> {
                           decoration: InputDecoration(
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants.kMainColor!), // Change the border color when focused
+                                  color: Constants
+                                      .kMainColor), // Change the border color when focused
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color:
-                                      Constants().kBgColor), // Change the border color when not focused
+                                  color: Constants()
+                                      .kBgColor), // Change the border color when not focused
                             ),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             labelText: lang.S.of(context).toDate,
@@ -216,8 +216,8 @@ class _DueReportScreenState extends State<DueReportScreen> {
                                 width: double.infinity,
                                 padding: const EdgeInsets.all(5),
                                 decoration: BoxDecoration(
-                                    border:
-                                        Border.all(color: Constants().kBgColor, width: 1),
+                                    border: Border.all(
+                                        color: Constants().kBgColor, width: 1),
                                     borderRadius: const BorderRadius.all(
                                         Radius.circular(8))),
                                 child: DropdownButtonHideUnderline(
@@ -282,9 +282,10 @@ class _DueReportScreenState extends State<DueReportScreen> {
                                 height: 100,
                                 width: double.infinity,
                                 decoration: BoxDecoration(
-                                    color: Constants.kMainColor!.withOpacity(0.1),
+                                    color:
+                                        Constants.kMainColor.withOpacity(0.1),
                                     border: Border.all(
-                                        width: 1, color: Constants.kMainColor!),
+                                        width: 1, color: Constants.kMainColor),
                                     borderRadius: const BorderRadius.all(
                                         Radius.circular(15))),
                                 child: Row(
@@ -428,8 +429,8 @@ class _DueReportScreenState extends State<DueReportScreen> {
                                                                 style: TextStyle(
                                                                     fontSize:
                                                                         16,
-                                                                    color:
-                                                                        Constants.kMainColor),
+                                                                    color: Constants
+                                                                        .kMainColor),
                                                               )
                                                             : const Text('')
                                                       ],
@@ -614,8 +615,8 @@ class _DueReportScreenState extends State<DueReportScreen> {
                                                               icon: Icon(
                                                                 FeatherIcons
                                                                     .printer,
-                                                                color:
-                                                                    Constants.kMainColor,
+                                                                color: Constants
+                                                                    .kMainColor,
                                                               )),
                                                           IconButton(
                                                               onPressed: () => GeneratePdf()
@@ -627,8 +628,8 @@ class _DueReportScreenState extends State<DueReportScreen> {
                                                               icon: Icon(
                                                                 Icons
                                                                     .picture_as_pdf,
-                                                                color:
-                                                                    Constants.kMainColor,
+                                                                color: Constants
+                                                                    .kMainColor,
                                                               )),
                                                         ],
                                                       );
@@ -678,10 +679,10 @@ class _DueReportScreenState extends State<DueReportScreen> {
                 }, error: (e, stack) {
                   return Text(e.toString());
                 }, loading: () {
-                   return Center(
-                  child: CircularProgressIndicator(
-                color: Constants.kMainColor,
-              ));
+                  return Center(
+                      child: CircularProgressIndicator(
+                    color: Constants.kMainColor,
+                  ));
                 }),
               ],
             ),

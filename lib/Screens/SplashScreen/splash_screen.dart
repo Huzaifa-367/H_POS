@@ -13,7 +13,7 @@ import 'package:mobile_pos/generated/l10n.dart' as lang;
 import '../../GlobalComponents/license_verifier.dart';
 import '../../currency.dart';
 import '../../repository/subscription_repo.dart';
-import '../Home/home.dart';
+import '../Home/Dashboard.dart';
 import '../language/language_provider.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -92,23 +92,23 @@ class _SplashScreenState extends State<SplashScreen> {
     //////////
     ///
     ///
-    String? colorValue = prefs.getString('selectedColor');
+    // String? colorValue = prefs.getString('selectedColor');
 
-    if (colorValue != null) {
-      String hexColor = colorValue.replaceAll('Color(', '').replaceAll(')', '');
-      print("Color Value: $colorValue");
+    // if (colorValue != null) {
+    //   String hexColor = colorValue.replaceAll('Color(', '').replaceAll(')', '');
+    //   print("Color Value: $colorValue");
 
-      ///Color(0xff32c331)
-      print("HexValue: $hexColor");
-      setState(() {
-        Constants.kMainColor = Color(int.parse(hexColor));
-      });
+    //   ///Color(0xff32c331)
+    //   print("HexValue: $hexColor");
+    //   setState(() {
+    //     Constants.kMainColor = Color(int.parse(hexColor));
+    //   });
 
-      //setState(() {});
-      context
-          .read<ColorProvider>()
-          .setSelectedColor(Color(int.parse(hexColor)));
-    }
+    //   //setState(() {});
+    //   context
+    //       .read<ColorProvider>()
+    //       .setSelectedColor(Color(int.parse(hexColor)));
+    // }
 
     final String? skipVersion = prefs.getString('skipVersion');
     bool result = await InternetConnectionChecker().hasConnection;
@@ -182,7 +182,7 @@ class _SplashScreenState extends State<SplashScreen> {
                                           'skipVersion', newUpdateVersion);
 
                                       if (currentUser != null) {
-                                        const Home().launch(context);
+                                        const Dashboard().launch(context);
                                       } else {
                                         const LoginForm().launch(context);
                                       }
@@ -208,7 +208,7 @@ class _SplashScreenState extends State<SplashScreen> {
                                   child: GestureDetector(
                                     onTap: () {
                                       if (currentUser != null) {
-                                        const Home().launch(context);
+                                        const Dashboard().launch(context);
                                       } else {
                                         const LoginForm().launch(context);
                                       }
@@ -242,7 +242,7 @@ class _SplashScreenState extends State<SplashScreen> {
             // const RedeemConfirmationScreen().launch(context);
           } else {
             if (currentUser != null) {
-              const Home().launch(context);
+              const Dashboard().launch(context);
             } else {
               const LoginForm().launch(context);
             }
@@ -318,7 +318,7 @@ class _SplashScreenState extends State<SplashScreen> {
                                         'skipVersion', newUpdateVersion);
 
                                     if (currentUser != null) {
-                                      const Home().launch(context);
+                                      const Dashboard().launch(context);
                                     } else {
                                       const LoginForm().launch(context);
                                     }
@@ -344,7 +344,7 @@ class _SplashScreenState extends State<SplashScreen> {
                                 child: GestureDetector(
                                   onTap: () {
                                     if (currentUser != null) {
-                                      const Home().launch(context);
+                                      const Dashboard().launch(context);
                                     } else {
                                       const LoginForm().launch(context);
                                     }
@@ -378,7 +378,7 @@ class _SplashScreenState extends State<SplashScreen> {
           // const RedeemConfirmationScreen().launch(context);
         } else {
           if (currentUser != null) {
-            const Home().launch(context);
+            const Dashboard().launch(context);
           } else {
             const LoginForm().launch(context);
           }

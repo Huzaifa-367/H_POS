@@ -90,6 +90,10 @@ dependencies:
 
   flutter_localizations:
     sdk: flutter
+  toasty_box: ^1.0.4
+  toastification: ^2.3.0
+  dio: ^5.7.0
+  flutter_svg: ^2.0.17
   # archive: ^4.0.2
 
 dev_dependencies:

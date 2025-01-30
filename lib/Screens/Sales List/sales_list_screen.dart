@@ -14,12 +14,12 @@ import '../../../Provider/profile_provider.dart';
 import '../../../constant.dart';
 import '../../GlobalComponents/generate_pdf.dart';
 import '../../currency.dart';
-import '../Home/home.dart';
+import '../Home/Dashboard.dart';
 import '../invoice_details/sales_invoice_details_screen.dart';
 import 'package:mobile_pos/generated/l10n.dart' as lang;
 
 class SalesListScreen extends StatefulWidget {
-  const SalesListScreen({Key? key}) : super(key: key);
+  const SalesListScreen({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -31,7 +31,7 @@ class _SalesListScreenState extends State<SalesListScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        return await const Home().launch(context, isNewTask: true);
+        return await const Dashboard().launch(context, isNewTask: true);
       },
       child: Scaffold(
         appBar: AppBar(
@@ -267,7 +267,8 @@ class _SalesListScreenState extends State<SalesListScreen> {
                                                     },
                                                     icon: Icon(
                                                       FeatherIcons.printer,
-                                                      color: Constants.kMainColor,
+                                                      color:
+                                                          Constants.kMainColor,
                                                     )),
                                                 IconButton(
                                                     onPressed: () => GeneratePdf()
@@ -278,7 +279,8 @@ class _SalesListScreenState extends State<SalesListScreen> {
                                                             context),
                                                     icon: Icon(
                                                       Icons.picture_as_pdf,
-                                                      color: Constants.kMainColor,
+                                                      color:
+                                                          Constants.kMainColor,
                                                     )),
                                                 IconButton(
                                                     onPressed: () {
@@ -291,7 +293,8 @@ class _SalesListScreenState extends State<SalesListScreen> {
                                                     },
                                                     icon: Icon(
                                                       FeatherIcons.edit,
-                                                      color: Constants.kMainColor,
+                                                      color:
+                                                          Constants.kMainColor,
                                                     )),
                                               ],
                                             );
@@ -329,7 +332,7 @@ class _SalesListScreenState extends State<SalesListScreen> {
             }, error: (e, stack) {
               return Text(e.toString());
             }, loading: () {
-               return Center(
+              return Center(
                   child: CircularProgressIndicator(
                 color: Constants.kMainColor,
               ));

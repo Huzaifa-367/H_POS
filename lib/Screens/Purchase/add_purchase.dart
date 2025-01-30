@@ -26,12 +26,11 @@ import '../../currency.dart';
 import '../../subscription.dart';
 
 import 'package:mobile_pos/Screens/Parties_Customers/Model/customer_model.dart';
-import '../Home/home.dart';
+import '../Home/Dashboard.dart';
 import 'package:mobile_pos/generated/l10n.dart' as lang;
 
 class AddPurchaseScreen extends StatefulWidget {
-  const AddPurchaseScreen({Key? key, required this.customerModel})
-      : super(key: key);
+  const AddPurchaseScreen({super.key, required this.customerModel});
 
   final CustomerModel customerModel;
 
@@ -743,7 +742,7 @@ class _AddPurchaseScreenState extends State<AddPurchaseScreen> {
                       Expanded(
                           child: GestureDetector(
                         onTap: () async {
-                          const Home().launch(context);
+                          const Dashboard().launch(context);
                           // if (providerData.cartItemPurchaseList.isNotEmpty) {
                           //   try {
                           //     EasyLoading.show(status: 'Loading...', dismissOnTap: false);

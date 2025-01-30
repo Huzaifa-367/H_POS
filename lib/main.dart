@@ -11,7 +11,7 @@ import 'package:mobile_pos/Screens/Authentication/register_form.dart';
 import 'package:mobile_pos/Screens/Authentication/sign_in.dart';
 import 'package:mobile_pos/Screens/Delivery/delivery_address_list.dart';
 import 'package:mobile_pos/Screens/Expense/expense_list.dart';
-import 'package:mobile_pos/Screens/Home/home.dart';
+import 'package:mobile_pos/Screens/Home/Dashboard.dart';
 import 'package:mobile_pos/Screens/Parties_Customers/parties_list.dart';
 import 'package:mobile_pos/Screens/Payment/payment_options.dart';
 import 'package:mobile_pos/Screens/Products/add_product.dart';
@@ -39,6 +39,8 @@ import 'firebase_options.dart';
 import 'generated/l10n.dart';
 import 'package:provider/provider.dart' as pro;
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+bool isOnline = false;
 void main() async {
   try {
     WidgetsFlutterBinding.ensureInitialized();
@@ -52,7 +54,7 @@ void main() async {
       pro.MultiProvider(
         providers: [
           pro.ChangeNotifierProvider(create: (context) => VisibilityProvider()),
-          pro.ChangeNotifierProvider(create: (context) => ColorProvider()),
+          // pro.ChangeNotifierProvider(create: (context) => ColorProvider()),
         ],
         child: const ProviderScope(
           child: MyApp(),
@@ -79,6 +81,8 @@ class _MyAppState extends State<MyApp> {
       create: (context) => LanguageChangeProvider(),
       child: Builder(
         builder: (context) => MaterialApp(
+          navigatorKey: navigatorKey,
+          // theme: AppThemeData.appThemeData,
           theme:
               ThemeData(useMaterial3: true, primaryColor: Constants.kMainColor),
           debugShowCheckedModeBanner: false,
@@ -105,7 +109,7 @@ class _MyAppState extends State<MyApp> {
             '/forgotPassword': (context) => const ForgotPassword(),
             // '/success': (context) =>  SuccessScreen(),
             // '/setupProfile': (context) => const ProfileSetup(),
-            '/home': (context) => const Home(),
+            '/home': (context) => const Dashboard(),
             '/profile': (context) => const ProfileScreen(),
             // ignore: missing_required_param
 
@@ -137,4 +141,9 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
+}
+
+class Get {
+  static BuildContext? get context => navigatorKey.currentContext;
+  static NavigatorState? get navigator => navigatorKey.currentState;
 }

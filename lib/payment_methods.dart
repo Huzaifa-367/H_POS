@@ -18,7 +18,7 @@ import 'package:mobile_pos/payment_credentials.dart';
 import 'package:mobile_pos/paytm_config.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:http/http.dart' as http;
-import 'Screens/Home/home.dart';
+import 'Screens/Home/Dashboard.dart';
 import 'constant.dart' as cns;
 import 'model/subscription_model.dart';
 import 'model/subscription_plan_model.dart';

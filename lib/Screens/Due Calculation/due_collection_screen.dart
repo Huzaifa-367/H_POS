@@ -20,12 +20,10 @@ import '../../constant.dart';
 import '../../currency.dart';
 import '../../model/due_transaction_model.dart';
 import '../../subscription.dart';
-import 'package:mobile_pos/Screens/Parties_Customers/add_Parties.dart';
 import 'package:mobile_pos/generated/l10n.dart' as lang;
 
 class DueCollectionScreen extends StatefulWidget {
-  const DueCollectionScreen({Key? key, required this.customerModel})
-      : super(key: key);
+  const DueCollectionScreen({super.key, required this.customerModel});
 
   @override
   State<DueCollectionScreen> createState() => _DueCollectionScreenState();

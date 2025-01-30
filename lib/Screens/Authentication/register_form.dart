@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile_pos/GlobalComponents/button_global.dart';
+import 'package:mobile_pos/GlobalComponents/core_widgets.dart';
 import 'package:mobile_pos/Screens/Authentication/phone.dart';
+import 'package:mobile_pos/Utils/validation_rules.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../constant.dart';
@@ -62,125 +64,45 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       child: Column(
                         children: [
                           const SizedBox(height: 20),
-                          TextFormField(
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: InputDecoration(
-                              suffixIconColor: Constants.kMainColor,
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Constants
-                                        .kMainColor), // Change the border color when focused
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Constants()
-                                        .kBgColor), // Change the border color when not focused
-                              ),
-                              border: const OutlineInputBorder(),
-                              labelText: lang.S.of(context).emailText,
-                              hintText:
-                                  lang.S.of(context).enterYourEmailAddress,
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Email can\'n be empty';
-                              } else if (!value.contains('@')) {
-                                return 'Please enter a valid email';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                              auth.email = value!;
+                          CustomTextFormField(
+                            hintText: lang.S.of(context).enterYourEmailAddress,
+                            validator: (p0) => ValidationRules().email(p0),
+                            onChanged: (p0) {
+                              setState(() {
+                                auth.email = p0;
+                              });
                             },
                           ),
                           const SizedBox(height: 20),
-                          TextFormField(
-                            keyboardType: TextInputType.text,
-                            obscureText: showPass1,
-                            decoration: InputDecoration(
-                              suffixIconColor: Constants.kMainColor,
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Constants
-                                        .kMainColor), // Change the border color when focused
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Constants()
-                                        .kBgColor), // Change the border color when not focused
-                              ),
-                              border: const OutlineInputBorder(),
-                              labelText: lang.S.of(context).password,
-                              hintText: lang.S.of(context).pleaseEnterAPassword,
-                              suffixIcon: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    showPass1 = !showPass1;
-                                  });
-                                },
-                                icon: Icon(
-                                  showPass1
-                                      ? Icons.visibility_off
-                                      : Icons.visibility,
-                                  color: Constants.kMainColor,
-                                ),
+                          CustomTextFormField(
+                            hintText: lang.S.of(context).password,
+                            validator: (p0) => ValidationRules().normal(p0),
+                            isPasswordTextField: showPass1,
+                            suffixIconConstraints:
+                                BoxConstraints(minWidth: 23, minHeight: 23),
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  showPass1 = !showPass1;
+                                });
+                              },
+                              icon: Icon(
+                                showPass1
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                                color: Constants.kMainColor,
                               ),
                             ),
-                            onChanged: (value) {
-                              givenPassword = value;
-                            },
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Password can\'t be empty';
-                              } else if (value.length < 4) {
-                                return 'Please enter a bigger password';
-                              } else if (value.length < 4) {
-                                return 'Please enter a bigger password';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                              auth.password = value!;
+                            onChanged: (p0) {
+                              setState(() {
+                                givenPassword = p0;
+                                auth.password = p0;
+                              });
                             },
                           ),
                           const SizedBox(height: 20),
-                          TextFormField(
-                            keyboardType: TextInputType.emailAddress,
-                            obscureText: showPass2,
-                            decoration: InputDecoration(
-                              suffixIconColor: Constants.kMainColor,
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Constants
-                                        .kMainColor), // Change the border color when focused
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Constants()
-                                        .kBgColor), // Change the border color when not focused
-                              ),
-                              border: const OutlineInputBorder(),
-                              labelText: lang.S.of(context).confirmPass,
-                              hintText: lang.S
-                                  .of(context)
-                                  .pleaseEnterAConfirmPassword,
-                              suffixIcon: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    showPass2 = !showPass2;
-                                  });
-                                },
-                                icon: Icon(
-                                  showPass2
-                                      ? Icons.visibility_off
-                                      : Icons.visibility,
-                                  color: Constants.kMainColor,
-                                ),
-                              ),
-                            ),
-                            onChanged: (value) {
-                              givenPassword2 = value;
-                            },
+                          CustomTextFormField(
+                            hintText: lang.S.of(context).password,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Password can\'t be empty';
@@ -191,21 +113,39 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               }
                               return null;
                             },
+                            isPasswordTextField: showPass2,
+                            suffixIconConstraints:
+                                BoxConstraints(minWidth: 23, minHeight: 23),
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  showPass2 = !showPass2;
+                                });
+                              },
+                              icon: Icon(
+                                showPass2
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                                color: Constants.kMainColor,
+                              ),
+                            ),
+                            onChanged: (p0) {
+                              setState(() {
+                                givenPassword2 = p0;
+                              });
+                            },
                           ),
                         ],
                       ),
                     ),
                   ),
-                  ButtonGlobalWithoutIcon(
-                    buttontext: lang.S.of(context).register,
-                    buttonDecoration:
-                        kButtonDecoration.copyWith(color: Constants.kMainColor),
-                    onPressed: () {
+                  CustomStretchedTextButtonWidget(
+                    buttonText: lang.S.of(context).register,
+                    onTap: () {
                       if (validateAndSave()) {
                         auth.signUp(context);
                       }
                     },
-                    buttonTextColor: Colors.white,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

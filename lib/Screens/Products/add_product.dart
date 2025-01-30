@@ -14,10 +14,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:mobile_pos/GlobalComponents/button_global.dart';
-import 'package:mobile_pos/GlobalComponents/category_list.dart';
-import 'package:mobile_pos/Screens/Products/brands_list.dart';
-import 'package:mobile_pos/Screens/Products/unit_list.dart';
+import 'package:mobile_pos/GlobalComponents/Button_Widget.dart';
+import 'package:mobile_pos/GlobalComponents/DropDown/custom_dropdown.dart';
+import 'package:mobile_pos/GlobalComponents/add_category.dart';
+import 'package:mobile_pos/GlobalComponents/core_widgets.dart';
+import 'package:mobile_pos/GlobalComponents/text_widget.dart';
+import 'package:mobile_pos/Provider/category_brans_units_provide.dart';
+import 'package:mobile_pos/Screens/Products/Model/unit_model.dart';
+import 'package:mobile_pos/Utils/validation_rules.dart';
 import 'package:mobile_pos/model/product_model.dart';
 import 'package:mobile_pos/repository/subscription_repo.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -26,20 +30,17 @@ import '../../GlobalComponents/Model/category_model.dart';
 import '../../Provider/product_provider.dart';
 import '../../constant.dart';
 import '../../currency.dart';
-import '../Home/home.dart';
+import '../Home/Dashboard.dart';
+import 'Model/brands_model.dart';
 
 // ignore: must_be_immutable
 class AddProduct extends StatefulWidget {
   AddProduct({super.key, this.catName, this.unitsName, this.brandName});
 
-  // ignore: prefer_typing_uninitialized_variables
-  var catName;
+  String? catName;
 
-  // ignore: prefer_typing_uninitialized_variables
-  var unitsName;
-
-  // ignore: prefer_typing_uninitialized_variables
-  var brandName;
+  String? unitsName;
+  String? brandName;
 
   @override
   // ignore: library_private_types_in_public_api
@@ -82,6 +83,10 @@ class _AddProductState extends State<AddProduct> {
   File imageFile = File('No File');
   String imagePath = 'No Data';
 
+  /// Popup values
+  String unitsName = '';
+  CategoryModel? selectedCategory;
+
   Future<void> uploadFile(String filePath) async {
     File file = File(filePath);
     try {
@@ -104,7 +109,7 @@ class _AddProductState extends State<AddProduct> {
     }
   }
 
-  Future<void> scanBarcodeNormal() async {
+  Future<String> scanBarcodeNormal() async {
     String barcodeScanRes;
     try {
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
@@ -112,30 +117,34 @@ class _AddProductState extends State<AddProduct> {
     } on PlatformException {
       barcodeScanRes = 'Failed to get platform version.';
     }
-    if (!mounted) return;
+    if (!mounted) {
+      return '';
+    }
     if (codeList.contains(barcodeScanRes)) {
       EasyLoading.showError('This Product Already added!');
     } else {
       if (barcodeScanRes != '-1') {
-        setState(() {
-          productCode = barcodeScanRes;
-          promoCodeHint = barcodeScanRes;
-        });
+        return barcodeScanRes;
+        // setState(() {
+        //   productCode = barcodeScanRes;
+        //   promoCodeHint = barcodeScanRes;
+        // });
       }
     }
+    return '';
   }
 
   @override
   void initState() {
     widget.catName == null
         ? productCategory = 'Select Product Category'
-        : productCategory = widget.catName;
+        : productCategory = widget.catName ?? "";
     widget.unitsName == null
         ? productUnit = 'Select Units'
-        : productUnit = widget.unitsName;
+        : productUnit = widget.unitsName ?? "";
     widget.brandName == null
         ? brandName = 'Select Brands'
-        : brandName = widget.brandName;
+        : brandName = widget.brandName ?? "";
     super.initState();
   }
 
@@ -143,8 +152,9 @@ class _AddProductState extends State<AddProduct> {
   Widget build(BuildContext context) {
     loop++;
     return Scaffold(
+      backgroundColor: AppColors.shadeColor2,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.bgColor,
         iconTheme: const IconThemeData(color: Colors.black),
         title: Text(
           lang.S.of(context).addNewProduct,
@@ -156,15 +166,18 @@ class _AddProductState extends State<AddProduct> {
         centerTitle: true,
       ),
       body: Consumer(builder: (context, ref, __) {
+        final categoryData = ref.watch(categoryProvider);
+        final brandData = ref.watch(brandsProvider);
+        final unitData = ref.watch(unitsProvider);
         return SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.only(left: 10.0, right: 10.0),
             child: Column(
+              spacing: 10,
               children: [
                 FirebaseAnimatedList(
                   shrinkWrap: true,
                   query: FirebaseDatabase.instance
-                      // ignore: deprecated_member_use
                       .ref()
                       .child(constUserId)
                       .child('Products'),
@@ -178,7 +191,7 @@ class _AddProductState extends State<AddProduct> {
                 ).visible(loop <= 1),
                 const SizedBox(
                   height: 10.0,
-                ),
+                ).visible(showProgress),
                 Visibility(
                   visible: showProgress,
                   child: CircularProgressIndicator(
@@ -186,583 +199,457 @@ class _AddProductState extends State<AddProduct> {
                     strokeWidth: 5.0,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: AppTextField(
-                    textFieldType: TextFieldType.NAME,
-                    onChanged: (value) {
-                      setState(() {
-                        productName = value;
-                      });
-                    },
-                    decoration: InputDecoration(
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      labelText: lang.S.of(context).productName,
-                      hintText: 'Realme GT Panel',
-                      border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                        borderSide: BorderSide(
-                            color: Constants
-                                .kMainColor), // Change the border color when focused
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                        borderSide: BorderSide(
-                            color: Constants()
-                                .kBgColor), // Change the border color when not focused
-                      ),
-                    ),
-                  ),
+                CustomTextFormField(
+                  hintText: lang.S.of(context).productName,
+                  validator: (p0) => ValidationRules().normal(p0),
+                  onChanged: (p0) {
+                    setState(() {
+                      productName = p0;
+                    });
+                  },
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Container(
-                    height: 60.0,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5.0),
-                      border: Border.all(color: Constants().kBgColor),
-                    ),
-                    child: GestureDetector(
-                      onTap: () async {
-                        data = await const CategoryList().launch(context);
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomDropdown.search(
+                      hintText: productCategory,
+                      onChanged: (item) async {
+                        List<String> variations = [];
+
                         setState(() {
-                          productCategory = data.categoryName;
+                          productCategory = item!.categoryName;
+                          if (item.capacity) variations.add("Capacity");
+                          if (item.color) variations.add("Color");
+                          if (item.size) variations.add("Size");
+                          if (item.type) variations.add("Type");
+                          if (item.weight) variations.add("Weight");
+
+                          data = GetCategoryAndVariationModel(
+                            variations: variations,
+                            categoryName: item.categoryName,
+                          );
                         });
                       },
-                      child: Row(
-                        children: [
-                          const SizedBox(
-                            width: 10.0,
-                          ),
-                          Text(productCategory),
-                          const Spacer(),
-                          Icon(
-                            Icons.keyboard_arrow_down,
-                            color: Constants.kMainColor,
-                          ),
-                          const SizedBox(
-                            width: 10.0,
-                          ),
-                        ],
-                      ),
+                      enabled: true,
+                      headerBuilder: (context, selectedItem, enabled) {
+                        return Text(selectedItem.categoryName);
+                      },
+                      listItemBuilder:
+                          (context, item, isSelected, onItemSelect) {
+                        return Text(item.categoryName);
+                      },
+                      items: categoryData.value,
+                    ).withWidth(context.width() * 0.7),
+                    ButtonWidget(
+                      btnText: "ADD",
+                      onPress: () => const AddCategory().launch(context),
                     ),
-                  ),
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: AppTextField(
-                          textFieldType: TextFieldType.NAME,
-                          onChanged: (value) {
-                            setState(() {
-                              size = value;
-                            });
-                          },
-                          decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Constants
-                                      .kMainColor), // Change the border color when focused
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Constants()
-                                      .kBgColor), // Change the border color when not focused
-                            ),
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
-                            labelText: lang.S.of(context).size,
-                            hintText: 'L,M,S',
-                            border: const OutlineInputBorder(),
-                          ),
-                        ),
-                      ),
-                    ).visible(data.variations.contains('Size')),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: AppTextField(
-                          textFieldType: TextFieldType.NAME,
-                          onChanged: (value) {
-                            setState(() {
-                              color = value;
-                            });
-                          },
-                          decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Constants
-                                      .kMainColor), // Change the border color when focused
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Constants()
-                                      .kBgColor), // Change the border color when not focused
-                            ),
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
-                            labelText: lang.S.of(context).color,
-                            hintText: 'Green',
-                            border: const OutlineInputBorder(),
-                          ),
-                        ),
-                      ),
-                    ).visible(data.variations.contains('Color')),
                   ],
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: AppTextField(
-                          textFieldType: TextFieldType.NAME,
-                          onChanged: (value) {
-                            setState(() {
-                              weight = value;
-                            });
-                          },
-                          decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Constants
-                                      .kMainColor), // Change the border color when focused
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Constants()
-                                      .kBgColor), // Change the border color when not focused
-                            ),
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
-                            labelText: lang.S.of(context).weight,
-                            hintText: '10 g',
-                            border: const OutlineInputBorder(),
-                          ),
-                        ),
-                      ),
-                    ).visible(data.variations.contains('Weight')),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: AppTextField(
-                          textFieldType: TextFieldType.NAME,
-                          onChanged: (value) {
-                            setState(() {
-                              capacity = value;
-                            });
-                          },
-                          decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Constants
-                                      .kMainColor), // Change the border color when focused
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Constants()
-                                      .kBgColor), // Change the border color when not focused
-                            ),
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
-                            labelText: lang.S.of(context).capacity,
-                            hintText: '8 GB',
-                            border: const OutlineInputBorder(),
-                          ),
-                        ),
-                      ),
-                    ).visible(data.variations.contains('Capacity')),
+                    CustomTextFormField(
+                      hintText: lang.S.of(context).size,
+                      labelText: "L,M,S",
+                      validator: (p0) => ValidationRules().normal(p0),
+                      onChanged: (p0) {
+                        setState(() {
+                          size = p0;
+                        });
+                      },
+                    )
+                        .withWidth(context.width() * 0.45)
+                        .visible(data.variations.contains('Size')),
+                    CustomTextFormField(
+                      hintText: lang.S.of(context).color,
+                      labelText: 'Green',
+                      validator: (p0) => ValidationRules().normal(p0),
+                      onChanged: (p0) {
+                        setState(() {
+                          color = p0;
+                        });
+                      },
+                    )
+                        .withWidth(context.width() * 0.45)
+                        .visible(data.variations.contains('Color')),
                   ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: AppTextField(
-                    textFieldType: TextFieldType.NAME,
-                    onChanged: (value) {
-                      setState(() {
-                        type = value;
-                      });
-                    },
-                    decoration: InputDecoration(
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Constants
-                                .kMainColor), // Change the border color when focused
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Constants()
-                                .kBgColor), // Change the border color when not focused
-                      ),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      labelText: lang.S.of(context).type,
-                      hintText: 'Vip',
-                      border: const OutlineInputBorder(),
-                    ),
-                  ),
+                ).visible(data.variations.contains('Size') ||
+                    data.variations.contains('Color')),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomTextFormField(
+                      hintText: lang.S.of(context).weight,
+                      labelText: '10 g',
+                      validator: (p0) => ValidationRules().normal(p0),
+                      onChanged: (p0) {
+                        setState(() {
+                          weight = p0;
+                        });
+                      },
+                    )
+                        .withWidth(context.width() * 0.45)
+                        .visible(data.variations.contains('Weight')),
+                    CustomTextFormField(
+                      hintText: lang.S.of(context).capacity,
+                      labelText: '8 GB',
+                      validator: (p0) => ValidationRules().normal(p0),
+                      onChanged: (p0) {
+                        setState(() {
+                          capacity = p0;
+                        });
+                      },
+                    )
+                        .withWidth(context.width() * 0.45)
+                        .visible(data.variations.contains('Capacity')),
+                  ],
+                ).visible(data.variations.contains('Capacity') ||
+                    data.variations.contains('Weight')),
+                CustomTextFormField(
+                  hintText: lang.S.of(context).type,
+                  labelText: 'Vip',
+                  validator: (p0) => ValidationRules().normal(p0),
+                  onChanged: (p0) {
+                    setState(() {
+                      type = p0;
+                    });
+                  },
                 ).visible(data.variations.contains('Type')),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Container(
-                    height: 60.0,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5.0),
-                      border: Border.all(color: Constants().kBgColor),
-                    ),
-                    child: GestureDetector(
-                      onTap: () async {
-                        String data = await const BrandsList().launch(context);
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomDropdown.search(
+                      hintText: brandName,
+                      onChanged: (item) async {
                         setState(() {
-                          brandName = data;
+                          brandName = item!.brandName;
                         });
                       },
-                      child: Row(
-                        children: [
-                          const SizedBox(
-                            width: 10.0,
-                          ),
-                          Text(brandName),
-                          const Spacer(),
-                          Icon(
-                            Icons.keyboard_arrow_down,
-                            color: Constants.kMainColor,
-                          ),
-                          const SizedBox(
-                            width: 10.0,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 3,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: AppTextField(
-                          controller: productCodeController,
-                          textFieldType: TextFieldType.NAME,
-                          onChanged: (value) {
-                            setState(() {
-                              productCode = value;
-                              promoCodeHint = value;
-                            });
-                          },
-                          onFieldSubmitted: (value) {
-                            if (codeList.contains(value)) {
-                              EasyLoading.showError(
-                                  'This Product Already added!');
-                              productCodeController.clear();
-                            } else {
-                              setState(() {
-                                productCode = value;
-                                promoCodeHint = value;
-                              });
-                            }
-                          },
-                          decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Constants
-                                      .kMainColor), // Change the border color when focused
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Constants()
-                                      .kBgColor), // Change the border color when not focused
-                            ),
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
-                            labelText: lang.S.of(context).productCode,
-                            hintText: promoCodeHint,
-                            border: const OutlineInputBorder(),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: GestureDetector(
-                          onTap: () => scanBarcodeNormal(),
-                          child: Container(
-                            height: 60.0,
-                            width: 100.0,
-                            padding: const EdgeInsets.all(5.0),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8.0),
-                              border: Border.all(color: Constants.kMainColor),
-                            ),
-                            child: const Image(
-                              image: AssetImage('images/barcode.png'),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: AppTextField(
-                          textFieldType: TextFieldType.NAME,
-                          onChanged: (value) {
-                            setState(() {
-                              productStock = value;
-                            });
-                          },
-                          decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Constants
-                                      .kMainColor), // Change the border color when focused
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Constants()
-                                      .kBgColor), // Change the border color when not focused
-                            ),
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
-                            labelText: lang.S.of(context).stock,
-                            hintText: '20',
-                            border: const OutlineInputBorder(),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Container(
-                          height: 60.0,
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5.0),
-                            border: Border.all(color: Constants().kBgColor),
-                          ),
-                          child: GestureDetector(
-                            onTap: () async {
-                              String data =
-                                  await const UnitList().launch(context);
-                              setState(() {
-                                productUnit = data;
-                              });
-                            },
-                            child: Row(
-                              children: [
-                                const SizedBox(
-                                  width: 10.0,
+                      enabled: true,
+                      headerBuilder: (context, selectedItem, enabled) {
+                        return Text(selectedItem.brandName);
+                      },
+                      listItemBuilder:
+                          (context, item, isSelected, onItemSelect) {
+                        return Text(item.brandName);
+                      },
+                      items: brandData.value,
+                    ).withWidth(context.width() * 0.7),
+                    ButtonWidget(
+                      btnText: "ADD",
+                      onPress: () => showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Dialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              // ignore: sized_box_for_whitespace
+                              child: Container(
+                                height: 200.0,
+                                width: MediaQuery.of(context).size.width - 80,
+                                margin: EdgeInsets.all(15),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  spacing: 15,
+                                  children: [
+                                    TextWidget(
+                                      title: lang.S.of(context).addBrand,
+                                      txtSize: 16.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    CustomTextFormField(
+                                      hintText: lang.S.of(context).brandName,
+                                      validator: (p0) =>
+                                          ValidationRules().normal(p0),
+                                      onChanged: (p0) {
+                                        setState(() {
+                                          brandName = p0;
+                                        });
+                                      },
+                                    ),
+                                    ButtonWidget(
+                                      btnText: lang.S.of(context).save,
+                                      onPress: () async {
+                                        bool isAlreadyAdded = false;
+                                        brandData.value?.forEach((element) {
+                                          if (element.brandName
+                                                  .toLowerCase()
+                                                  .removeAllWhiteSpace() ==
+                                              brandName
+                                                  .toLowerCase()
+                                                  .removeAllWhiteSpace()) {
+                                            isAlreadyAdded = true;
+                                          }
+                                        });
+                                        setState(() {
+                                          showProgress = true;
+                                        });
+                                        final DatabaseReference
+                                            categoryInformationRef =
+                                            FirebaseDatabase.instance
+                                                .ref()
+                                                .child(constUserId)
+                                                .child('Brands');
+                                        categoryInformationRef.keepSynced(true);
+                                        BrandsModel brandModel =
+                                            BrandsModel(brandName);
+                                        isAlreadyAdded
+                                            ? EasyLoading.showError(
+                                                'Already Added')
+                                            : categoryInformationRef
+                                                .push()
+                                                .set(brandModel.toJson());
+                                        setState(() {
+                                          showProgress = false;
+                                          isAlreadyAdded
+                                              ? null
+                                              : ScaffoldMessenger.of(context)
+                                                  .showSnackBar(const SnackBar(
+                                                      content: Text(
+                                                          "Data Saved Successfully")));
+                                        });
+                                        ref.refresh(brandsProvider);
+
+                                        isAlreadyAdded
+                                            ? null
+                                            : Navigator.pop(context);
+                                      },
+                                    ),
+                                  ],
                                 ),
-                                Text(productUnit),
-                                const Spacer(),
-                                Icon(
-                                  Icons.keyboard_arrow_down,
-                                  color: Constants.kMainColor,
-                                ),
-                                const SizedBox(
-                                  width: 10.0,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: AppTextField(
-                          textFieldType: TextFieldType.PHONE,
-                          onChanged: (value) {
-                            setState(() {
-                              productPurchasePrice = value;
-                            });
-                          },
-                          decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Constants
-                                      .kMainColor), // Change the border color when focused
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Constants()
-                                      .kBgColor), // Change the border color when not focused
-                            ),
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
-                            labelText: lang.S.of(context).purchasePrice,
-                            hintText: '$currency 2000',
-                            border: const OutlineInputBorder(),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: AppTextField(
-                          textFieldType: TextFieldType.PHONE,
-                          onChanged: (value) {
-                            setState(() {
-                              productSalePrice = value;
-                            });
-                          },
-                          decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Constants
-                                      .kMainColor), // Change the border color when focused
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Constants()
-                                      .kBgColor), // Change the border color when not focused
-                            ),
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
-                            labelText: lang.S.of(context).salePrice,
-                            hintText: '$currency 2800',
-                            border: const OutlineInputBorder(),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: AppTextField(
-                          textFieldType: TextFieldType.PHONE,
-                          onChanged: (value) {
-                            setState(() {
-                              productWholeSalePrice = value;
-                            });
-                          },
-                          decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Constants
-                                      .kMainColor), // Change the border color when focused
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Constants()
-                                      .kBgColor), // Change the border color when not focused
-                            ),
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
-                            labelText: lang.S.of(context).wholeSalePrice,
-                            hintText: '$currency 2600',
-                            border: const OutlineInputBorder(),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: AppTextField(
-                          textFieldType: TextFieldType.PHONE,
-                          onChanged: (value) {
-                            setState(() {
-                              productDealerPrice = value;
-                            });
-                          },
-                          decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Constants
-                                      .kMainColor), // Change the border color when focused
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Constants()
-                                      .kBgColor), // Change the border color when not focused
-                            ),
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
-                            labelText: lang.S.of(context).dealerPrice,
-                            hintText: '$currency 2400',
-                            border: const OutlineInputBorder(),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                        child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: AppTextField(
-                        textFieldType: TextFieldType.PHONE,
-                        onChanged: (value) {
-                          setState(() {
-                            productDiscount = value;
-                          });
-                        },
-                        decoration: InputDecoration(
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Constants
-                                    .kMainColor), // Change the border color when focused
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Constants()
-                                    .kBgColor), // Change the border color when not focused
-                          ),
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
-                          labelText: lang.S.of(context).discount,
-                          hintText: '$currency 34.90',
-                          border: const OutlineInputBorder(),
-                        ),
-                      ),
-                    )).visible(false),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: AppTextField(
-                          textFieldType: TextFieldType.NAME,
-                          onChanged: (value) {
-                            setState(
-                              () {
-                                productManufacturer = value;
-                              },
+                              ),
                             );
-                          },
-                          decoration: InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Constants
-                                      .kMainColor), // Change the border color when focused
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Constants()
-                                      .kBgColor), // Change the border color when not focused
-                            ),
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
-                            labelText: lang.S.of(context).manufacturer,
-                            hintText: 'Apple',
-                            border: const OutlineInputBorder(),
-                          ),
-                        ),
-                      ),
+                          }),
                     ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomTextFormField(
+                      hintText: lang.S.of(context).productCode,
+                      controller: productCodeController,
+                      validator: (p0) => ValidationRules().normal(p0),
+                      onChanged: (value) {
+                        setState(() {
+                          productCode = value;
+                          promoCodeHint = value;
+                        });
+                      },
+                      onFieldSubmitted: (value) {
+                        if (codeList.contains(value)) {
+                          EasyLoading.showError('This Product Already added!');
+                          productCodeController.clear();
+                        } else {
+                          setState(() {
+                            productCode = value;
+                            promoCodeHint = value;
+                          });
+                        }
+                      },
+                    ).withWidth(context.width() * 0.65),
+                    ButtonWidget(
+                      btnText: "SCAN",
+                      onPress: () async {
+                        String value = await scanBarcodeNormal();
+                        productCode = value;
+                        promoCodeHint = value;
+                        productCodeController.text = value;
+                        setState(() {});
+                        print("Product Code===>>> $productCode");
+                      },
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomTextFormField(
+                      hintText: lang.S.of(context).stock,
+                      validator: (p0) => ValidationRules().normal(p0),
+                      onChanged: (p0) {
+                        setState(() {
+                          productStock = p0;
+                        });
+                      },
+                    ).withWidth(context.width() * 0.25),
+                    CustomDropdown.search(
+                      hintText: productUnit,
+                      onChanged: (item) async {
+                        setState(() {
+                          productUnit = item!.unitName;
+                        });
+                      },
+                      enabled: true,
+                      headerBuilder: (context, selectedItem, enabled) {
+                        return Text(selectedItem.unitName);
+                      },
+                      listItemBuilder:
+                          (context, item, isSelected, onItemSelect) {
+                        return Text(item.unitName);
+                      },
+                      items: unitData.value,
+                    ).withWidth(context.width() * 0.45),
+                    ButtonWidget(
+                      btnText: "ADD",
+                      onPress: () => showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Dialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              // ignore: sized_box_for_whitespace
+                              child: Container(
+                                height: 200.0,
+                                width: MediaQuery.of(context).size.width - 80,
+                                margin: EdgeInsets.all(15),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  spacing: 15,
+                                  children: [
+                                    TextWidget(
+                                      title: lang.S.of(context).addUnit,
+                                      txtSize: 16.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    CustomTextFormField(
+                                      hintText: lang.S.of(context).unitName,
+                                      validator: (p0) =>
+                                          ValidationRules().normal(p0),
+                                      onChanged: (p0) {
+                                        setState(() {
+                                          unitsName = p0;
+                                        });
+                                      },
+                                    ),
+                                    ButtonWidget(
+                                      btnText: lang.S.of(context).save,
+                                      onPress: () async {
+                                        bool isAlreadyAdded = false;
+                                        unitData.value?.forEach((element) {
+                                          if (element.unitName
+                                                  .toLowerCase()
+                                                  .removeAllWhiteSpace() ==
+                                              unitsName
+                                                  .toLowerCase()
+                                                  .removeAllWhiteSpace()) {
+                                            isAlreadyAdded = true;
+                                          }
+                                        });
+                                        setState(() {
+                                          showProgress = true;
+                                        });
+                                        final DatabaseReference
+                                            unitInformationRef =
+                                            FirebaseDatabase.instance
+                                                .ref()
+                                                .child(constUserId)
+                                                .child('Units');
+                                        unitInformationRef.keepSynced(true);
+                                        UnitModel unitModel =
+                                            UnitModel(unitsName);
+                                        isAlreadyAdded
+                                            ? EasyLoading.showError(
+                                                'Already Added')
+                                            : unitInformationRef
+                                                .push()
+                                                .set(unitModel.toJson());
+                                        setState(() {
+                                          showProgress = false;
+                                          isAlreadyAdded
+                                              ? null
+                                              : ScaffoldMessenger.of(context)
+                                                  .showSnackBar(const SnackBar(
+                                                      content: Text(
+                                                          "Data Saved Successfully")));
+                                        });
+
+                                        ref.refresh(unitsProvider);
+
+                                        // ignore: use_build_context_synchronously
+                                        isAlreadyAdded
+                                            ? null
+                                            : Navigator.pop(context);
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomTextFormField(
+                      hintText: lang.S.of(context).purchasePrice,
+                      validator: (p0) => ValidationRules().normal(p0),
+                      onChanged: (p0) {
+                        setState(() {
+                          productPurchasePrice = p0;
+                        });
+                      },
+                    ).withWidth(context.width() * 0.45),
+                    CustomTextFormField(
+                      hintText: lang.S.of(context).salePrice,
+                      validator: (p0) => ValidationRules().normal(p0),
+                      onChanged: (p0) {
+                        setState(() {
+                          productSalePrice = p0;
+                        });
+                      },
+                    ).withWidth(context.width() * 0.45),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomTextFormField(
+                      hintText: lang.S.of(context).wholeSalePrice,
+                      validator: (p0) => ValidationRules().normal(p0),
+                      onChanged: (p0) {
+                        setState(() {
+                          productWholeSalePrice = p0;
+                        });
+                      },
+                    ).withWidth(context.width() * 0.45),
+                    CustomTextFormField(
+                      hintText: lang.S.of(context).dealerPrice,
+                      validator: (p0) => ValidationRules().normal(p0),
+                      onChanged: (p0) {
+                        setState(() {
+                          productDealerPrice = p0;
+                        });
+                      },
+                    ).withWidth(context.width() * 0.45),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomTextFormField(
+                      hintText: lang.S.of(context).discount,
+                      validator: (p0) => ValidationRules().normal(p0),
+                      onChanged: (p0) {
+                        setState(() {
+                          productDiscount = p0;
+                        });
+                      },
+                    ).withWidth(context.width() * 0.45),
+                    CustomTextFormField(
+                      hintText: lang.S.of(context).manufacturer,
+                      validator: (p0) => ValidationRules().normal(p0),
+                      onChanged: (p0) {
+                        setState(() {
+                          productManufacturer = p0;
+                        });
+                      },
+                    ).withWidth(context.width() * 0.45),
                   ],
                 ),
                 Column(
@@ -933,11 +820,9 @@ class _AddProductState extends State<AddProduct> {
                     const SizedBox(height: 10),
                   ],
                 ),
-                ButtonGlobalWithoutIcon(
-                  buttontext: lang.S.of(context).saveNPublish,
-                  buttonDecoration:
-                      kButtonDecoration.copyWith(color: Constants.kMainColor),
-                  onPressed: () async {
+                ButtonWidget(
+                  btnText: lang.S.of(context).saveNPublish,
+                  onPress: () async {
                     if (!codeList.contains(productCode.toLowerCase()) &&
                         !productNameList.contains(productName.toLowerCase())) {
                       bool result =
@@ -990,7 +875,8 @@ class _AddProductState extends State<AddProduct> {
                             });
                             Future.delayed(const Duration(milliseconds: 100),
                                 () {
-                              const Home().launch(context, isNewTask: true);
+                              const Dashboard()
+                                  .launch(context, isNewTask: true);
                             });
                           } catch (e) {
                             EasyLoading.dismiss();
@@ -1044,7 +930,7 @@ class _AddProductState extends State<AddProduct> {
                             ref.refresh(productProvider);
                           });
                           Future.delayed(const Duration(milliseconds: 100), () {
-                            const Home().launch(context, isNewTask: true);
+                            const Dashboard().launch(context, isNewTask: true);
                           });
                         } catch (e) {
                           EasyLoading.dismiss();
@@ -1057,7 +943,6 @@ class _AddProductState extends State<AddProduct> {
                           'Product Code or Name are already added!');
                     }
                   },
-                  buttonTextColor: Colors.white,
                 ),
               ],
             ),

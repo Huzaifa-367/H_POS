@@ -13,7 +13,7 @@ import '../../constant.dart';
 import '../../currency.dart';
 import '../../model/subscription_model.dart';
 import '../../subscription.dart';
-import '../Home/home.dart';
+import '../Home/Dashboard.dart';
 import 'package:mobile_pos/generated/l10n.dart' as lang;
 
 import 'package:url_launcher/url_launcher.dart';
@@ -140,7 +140,7 @@ class _PurchasePremiumPlanScreenState extends State<PurchasePremiumPlanScreen> {
                         onTap: () {
                           widget.isCameBack
                               ? Navigator.pop(context)
-                              : const Home().launch(context);
+                              : const Dashboard().launch(context);
                         },
                         child: const Icon(Icons.cancel_outlined),
                       )
